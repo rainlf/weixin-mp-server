@@ -1,6 +1,6 @@
 package com.rainlf.weixin.app.dto;
 
-import com.rainlf.weixin.domain.consts.MahjongScoreExtEnum;
+import com.rainlf.weixin.domain.consts.MahjongFanEnum;
 import com.rainlf.weixin.domain.consts.MahjongWinCaseEnum;
 import lombok.Data;
 
@@ -11,11 +11,11 @@ import java.util.List;
  * @date 6/17/2024 11:20 AM
  */
 @Data
-public class MahjongRoundInfoDto {
+public class MahjongGameDto {
     private Integer recorderId;
     private List<Integer> winnerIds;
     private List<Integer> loserIds;
     private MahjongWinCaseEnum winCase;
     private Integer baseFan;
-    private List<MahjongScoreExtEnum> fanList;
+    private List<MahjongFanEnum> fanList;
 }

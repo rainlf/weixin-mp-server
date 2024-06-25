@@ -1,10 +1,13 @@
 package com.rainlf.weixin.infra.db.model;
 
-import com.rainlf.weixin.domain.consts.GameTypeEnum;
+import com.rainlf.weixin.domain.consts.MahjongFanEnum;
+import com.rainlf.weixin.domain.consts.MahjongWinCaseEnum;
+import com.rainlf.weixin.infra.db.converter.ListMahjongFanEnumConverter;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author rain
@@ -13,15 +16,15 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "weixin_game")
-public class Game {
+public class MahjongGame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer gameType;
     private Integer recorderId;
     private Integer score;
-    private String scoreExt;
-    private String winCase;
+    @Convert(converter = ListMahjongFanEnumConverter.class)
+    private List<MahjongFanEnum> fanList;
+    private MahjongWinCaseEnum winCase;
     @Column(insertable = false, updatable = false)
     private LocalDateTime createTime;
     @Column(insertable = false, updatable = false)

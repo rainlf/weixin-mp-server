@@ -1,6 +1,6 @@
 package com.rainlf.weixin.infra.db.repository;
 
-import com.rainlf.weixin.infra.db.model.WeixinConfig;
+import com.rainlf.weixin.infra.db.model.AppConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * @date 6/23/2024 8:19 PM
  */
 @Repository
-public interface WeixinConfigRepository extends JpaRepository<WeixinConfig, Integer> {
+public interface AppConfigRepository extends JpaRepository<AppConfig, Integer> {
 }

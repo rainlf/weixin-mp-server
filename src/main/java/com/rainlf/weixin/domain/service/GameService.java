@@ -1,7 +1,7 @@
 package com.rainlf.weixin.domain.service;
 
 import com.rainlf.weixin.app.dto.MahjongLogDto;
-import com.rainlf.weixin.app.dto.MahjongRoundInfoDto;
+import com.rainlf.weixin.app.dto.MahjongGameDto;
 import com.rainlf.weixin.app.dto.SportInfoDto;
 import com.rainlf.weixin.app.dto.UserMahjongTagDto;
 
@@ -18,7 +18,7 @@ public interface GameService {
 
     void deleteMahjongPlayer(Integer id);
 
-    void saveMahjongInfo(MahjongRoundInfoDto mahjongRoundInfoDto);
+    void saveMahjongInfo(MahjongGameDto mahjongGameDto);
 
     void saveSportInfo(SportInfoDto sportInfoDto);
 

@@ -7,7 +7,7 @@ import lombok.Getter;
  * @date 6/17/2024 2:36 PM
  */
 @Getter
-public enum MahjongScoreExtEnum {
+public enum MahjongFanEnum {
     MJ_DOOR_CLEAN_FAN("门清"),
     MJ_PENG_PENG_FAN("碰碰胡"),
     MJ_SAME_COLOR_FAN("清一色"),
@@ -18,7 +18,7 @@ public enum MahjongScoreExtEnum {
 
     private final String name;
 
-    MahjongScoreExtEnum(String name) {
+    MahjongFanEnum(String name) {
         this.name = name;
     }
 }
