@@ -234,10 +234,7 @@ public class GameServiceImpl implements GameService {
                     }
                     tags.addAll(mahjongScoreExtEnums.stream().map(MahjongScoreExtEnum::getName).toList());
 
-                    if (tags.size() >= userTagListMaxLen) {
-                        userMahjongTagDto.setTags(tags.subList(0, userTagListMaxLen));
-                        break;
-                    }
+                    userMahjongTagDto.setTags(tags.subList(0, Math.min(tags.size(), userTagListMaxLen)));
                 }
                 result.add(userMahjongTagDto);
             }
