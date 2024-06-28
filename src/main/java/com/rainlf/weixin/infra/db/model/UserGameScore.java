@@ -1,8 +1,8 @@
 package com.rainlf.weixin.infra.db.model;
 
+import com.rainlf.weixin.domain.consts.UserGameScoreTypeEnum;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
@@ -12,16 +12,15 @@ import java.time.LocalDateTime;
  */
 @Data
 @Entity
-@Table(name = "weixin_config")
-@SQLRestriction("is_deleted = 0")
-public class WeixinConfig {
+@Table(name = "weixin_game_detail")
+public class UserGameScore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String key;
-    private String value;
-    @Column(insertable = false)
-    private boolean isDeleted;
+    private Integer userId;
+    private Integer gameId;
+    private UserGameScoreTypeEnum type;
+    private Integer score;
     @Column(insertable = false, updatable = false)
     private LocalDateTime createTime;
     @Column(insertable = false, updatable = false)

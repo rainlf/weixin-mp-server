@@ -2,7 +2,7 @@ package com.rainlf.weixin.app.controller;
 
 import com.rainlf.weixin.app.dto.ApiResp;
 import com.rainlf.weixin.app.dto.MahjongLogDto;
-import com.rainlf.weixin.app.dto.MahjongRoundInfoDto;
+import com.rainlf.weixin.app.dto.MahjongGameDto;
 import com.rainlf.weixin.app.dto.UserMahjongTagDto;
 import com.rainlf.weixin.domain.service.GameService;
 import lombok.extern.slf4j.Slf4j;
@@ -45,10 +45,10 @@ public class MahjongController {
     }
 
 
-    @PostMapping("/round")
-    public ApiResp<Void> saveMahjongInfo(@RequestBody MahjongRoundInfoDto mahjongRoundInfoDto) {
-        log.info("saveMahjongInfo, req: {}", mahjongRoundInfoDto);
-        gameService.saveMahjongInfo(mahjongRoundInfoDto);
+    @PostMapping("/game")
+    public ApiResp<Void> saveMahjongInfo(@RequestBody MahjongGameDto mahjongGameDto) {
+        log.info("saveMahjongInfo, req: {}", mahjongGameDto);
+        gameService.saveMahjongInfo(mahjongGameDto);
         return ApiResp.success();
     }
 

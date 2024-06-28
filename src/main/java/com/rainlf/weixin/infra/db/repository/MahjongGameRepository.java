@@ -1,7 +1,6 @@
 package com.rainlf.weixin.infra.db.repository;
 
-import com.rainlf.weixin.infra.db.model.Game;
-import org.springframework.data.domain.Pageable;
+import com.rainlf.weixin.infra.db.model.MahjongGame;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +11,8 @@ import java.util.List;
  * @date 6/13/2024 10:34 PM
  */
 @Repository
-public interface GameRepository extends JpaRepository<Game, Integer> {
+public interface MahjongGameRepository extends JpaRepository<MahjongGame, Integer> {
 
-    List<Game> findByIdIn(List<Integer> ids);
+    List<MahjongGame> findByIdIn(List<Integer> ids);
 
 }
