@@ -1,6 +1,6 @@
 package com.rainlf.weixin.infra.sso;
 
-import com.rainlf.weixin.infra.db.model.User;
+import com.rainlf.weixin.infra.db.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

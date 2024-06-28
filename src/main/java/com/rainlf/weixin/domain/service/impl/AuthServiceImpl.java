@@ -1,8 +1,8 @@
 package com.rainlf.weixin.domain.service.impl;
 
 import com.rainlf.weixin.domain.service.AuthService;
-import com.rainlf.weixin.infra.db.model.User;
-import com.rainlf.weixin.infra.db.model.UserAsset;
+import com.rainlf.weixin.infra.db.entity.User;
+import com.rainlf.weixin.infra.db.entity.UserAsset;
 import com.rainlf.weixin.infra.db.repository.UserAssetRepository;
 import com.rainlf.weixin.infra.db.repository.UserRepository;
 import com.rainlf.weixin.infra.util.JwtUtils;

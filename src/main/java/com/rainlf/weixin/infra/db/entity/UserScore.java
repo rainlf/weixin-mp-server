@@ -1,4 +1,4 @@
-package com.rainlf.weixin.infra.db.model;
+package com.rainlf.weixin.infra.db.entity;
 
 import com.rainlf.weixin.domain.consts.UserGameScoreTypeEnum;
 import jakarta.persistence.*;
@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @Entity
-@Table(name = "weixin_game_detail")
-public class UserGameScore {
+@Table(name = "weixin_user_score")
+public class UserScore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

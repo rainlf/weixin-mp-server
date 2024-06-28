@@ -1,4 +1,4 @@
-package com.rainlf.weixin.infra.db.model;
+package com.rainlf.weixin.infra.db.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -12,14 +12,19 @@ import java.time.LocalDateTime;
  */
 @Data
 @Entity
-@Table(name = "weixin_config")
+@Table(name = "weixin_user")
 @SQLRestriction("is_deleted = 0")
-public class AppConfig {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String key;
-    private String value;
+    private String openId;
+    private String nickname;
+    private String avatar;
+    private String sessionKey;
+    private String comment;
+    @Column(insertable = false)
+    private boolean isAdmin;
     @Column(insertable = false)
     private boolean isDeleted;
     @Column(insertable = false, updatable = false)

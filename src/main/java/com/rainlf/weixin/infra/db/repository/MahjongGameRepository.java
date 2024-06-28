@@ -1,6 +1,6 @@
 package com.rainlf.weixin.infra.db.repository;
 
-import com.rainlf.weixin.infra.db.model.MahjongGame;
+import com.rainlf.weixin.infra.db.entity.MahjongGame;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

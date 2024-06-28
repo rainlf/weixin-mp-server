@@ -2,8 +2,8 @@ package com.rainlf.weixin.domain.service.impl;
 
 import com.rainlf.weixin.app.dto.UserInfoDto;
 import com.rainlf.weixin.domain.service.UserService;
-import com.rainlf.weixin.infra.db.model.User;
-import com.rainlf.weixin.infra.db.model.UserAsset;
+import com.rainlf.weixin.infra.db.entity.User;
+import com.rainlf.weixin.infra.db.entity.UserAsset;
 import com.rainlf.weixin.infra.db.repository.UserAssetRepository;
 import com.rainlf.weixin.infra.db.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;

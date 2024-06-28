@@ -1,6 +1,6 @@
 package com.rainlf.weixin.infra.db.repository;
 
-import com.rainlf.weixin.infra.db.model.AppConfig;
+import com.rainlf.weixin.infra.db.entity.AppConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

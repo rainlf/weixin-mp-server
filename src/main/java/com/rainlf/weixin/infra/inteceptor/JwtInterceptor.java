@@ -1,7 +1,7 @@
 package com.rainlf.weixin.infra.inteceptor;
 
 import com.rainlf.weixin.infra.db.repository.UserRepository;
-import com.rainlf.weixin.infra.db.model.User;
+import com.rainlf.weixin.infra.db.entity.User;
 import com.rainlf.weixin.infra.sso.SsoService;
 import com.rainlf.weixin.infra.util.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;

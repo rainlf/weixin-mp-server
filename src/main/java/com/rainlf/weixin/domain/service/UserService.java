@@ -1,7 +1,7 @@
 package com.rainlf.weixin.domain.service;
 
 import com.rainlf.weixin.app.dto.UserInfoDto;
-import com.rainlf.weixin.infra.db.model.User;
+import com.rainlf.weixin.infra.db.entity.User;
 
 import java.util.List;
 

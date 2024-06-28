@@ -8,7 +8,7 @@ import com.rainlf.weixin.domain.consts.UserGameScoreTypeEnum;
 import com.rainlf.weixin.domain.consts.MahjongFanEnum;
 import com.rainlf.weixin.domain.consts.MahjongWinCaseEnum;
 import com.rainlf.weixin.domain.service.GameService;
-import com.rainlf.weixin.infra.db.model.*;
+import com.rainlf.weixin.infra.db.entity.*;
 import com.rainlf.weixin.infra.db.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,9 +127,9 @@ public class GameServiceImpl implements GameService {
         List<Integer> gameIds = mahjongGames.stream().map(MahjongGame::getId).toList();
 
         // find game detail
-        List<UserGameScore> userGameScoreHistories = userScoreRepository.findByGameIdIn(gameIds);
-        List<Integer> userId = userGameScoreHistories.stream().map(UserGameScore::getUserId).toList();
-        Map<Integer/* gameId */, List<UserGameScore>> gameDetailsMap = userGameScoreHistories.stream().collect(Collectors.groupingBy(UserGameScore::getGameId));
+        List<UserScore> userScoreHistories = userScoreRepository.findByGameIdIn(gameIds);
+        List<Integer> userId = userScoreHistories.stream().map(UserScore::getUserId).toList();
+        Map<Integer/* gameId */, List<UserScore>> gameDetailsMap = userScoreHistories.stream().collect(Collectors.groupingBy(UserScore::getGameId));
 
         // find user
         List<User> users = userRepository.findAllById(userId);
@@ -157,11 +157,11 @@ public class GameServiceImpl implements GameService {
 
 
             // find all details in game
-            List<UserGameScore> userGameScoreList = gameDetailsMap.get(gameId);
+            List<UserScore> userScoreList = gameDetailsMap.get(gameId);
 
 
             // find recorder
-            UserGameScore recorderDetail = userGameScoreList.stream().filter(x -> x.getType() == UserGameScoreTypeEnum.MAHJONG_AWARD).findFirst().orElseThrow();
+            UserScore recorderDetail = userScoreList.stream().filter(x -> x.getType() == UserGameScoreTypeEnum.MAHJONG_AWARD).findFirst().orElseThrow();
             User recorder = userMap.get(recorderDetail.getUserId());
             mahjongLogDto.setRecorderId(recorder.getId());
             mahjongLogDto.setRecorderName(recorder.getNickname());
@@ -169,9 +169,9 @@ public class GameServiceImpl implements GameService {
             mahjongLogDto.setRecorderAward(recorderDetail.getScore());
 
             // find winner
-            List<UserGameScore> winnerDetailList = userGameScoreList.stream().filter(x -> x.getType() == UserGameScoreTypeEnum.MAHJONG_GAME).filter(x -> x.getScore() > 0).toList();
+            List<UserScore> winnerDetailList = userScoreList.stream().filter(x -> x.getType() == UserGameScoreTypeEnum.MAHJONG_GAME).filter(x -> x.getScore() > 0).toList();
             List<MahjongLogDto.Item> winners = new ArrayList<>();
-            for (UserGameScore winnerDetail : winnerDetailList) {
+            for (UserScore winnerDetail : winnerDetailList) {
                 User winner = userMap.get(winnerDetail.getUserId());
                 MahjongLogDto.Item winnerItem = new MahjongLogDto.Item();
                 winnerItem.setUserId(winner.getId());
@@ -183,9 +183,9 @@ public class GameServiceImpl implements GameService {
             mahjongLogDto.setWinners(winners);
 
             // find loser
-            List<UserGameScore> loserDetailList = userGameScoreList.stream().filter(x -> x.getType() == UserGameScoreTypeEnum.MAHJONG_GAME).filter(x -> x.getScore() < 0).toList();
+            List<UserScore> loserDetailList = userScoreList.stream().filter(x -> x.getType() == UserGameScoreTypeEnum.MAHJONG_GAME).filter(x -> x.getScore() < 0).toList();
             List<MahjongLogDto.Item> losers = new ArrayList<>();
-            for (UserGameScore loserDetail : loserDetailList) {
+            for (UserScore loserDetail : loserDetailList) {
                 User loser = userMap.get(loserDetail.getUserId());
                 MahjongLogDto.Item loserItem = new MahjongLogDto.Item();
                 loserItem.setUserId(loser.getId());
@@ -209,8 +209,8 @@ public class GameServiceImpl implements GameService {
             // find game detail, get game id
             Pageable pageable = PageRequest.of(0, gameDetailPageSize, Sort.by(Sort.Direction.DESC, "id"));
 //            List<GameDetail> gameDetails = gameDetailRepository.findByUserIdAndType(userId, 0, pageable);
-            List<UserGameScore> userGameScoreHistories = userScoreRepository.findByUserIdAndType(userId, UserGameScoreTypeEnum.MAHJONG_GAME);
-            List<Integer> gameIds = userGameScoreHistories.stream().map(UserGameScore::getGameId).toList();
+            List<UserScore> userScoreHistories = userScoreRepository.findByUserIdAndType(userId, UserGameScoreTypeEnum.MAHJONG_GAME);
+            List<Integer> gameIds = userScoreHistories.stream().map(UserScore::getGameId).toList();
 
             // find game
             if (!gameIds.isEmpty()) {
@@ -278,7 +278,7 @@ public class GameServiceImpl implements GameService {
         Map<Integer, UserAsset> userAssetMap = userAssets.stream().collect(Collectors.toMap(UserAsset::getUserId, x -> x));
 
         // change asset and insert game details
-        List<UserGameScore> userGameScoreHistories = new ArrayList<>();
+        List<UserScore> userScoreHistories = new ArrayList<>();
         users.forEach(user -> {
             Integer userId = user.getId();
             // change user asset
@@ -286,17 +286,17 @@ public class GameServiceImpl implements GameService {
             userAsset.setCopperCoin(userAsset.getCopperCoin() + socreMap.get(userId));
 
             // insert game details
-            UserGameScore detail = new UserGameScore();
+            UserScore detail = new UserScore();
             detail.setGameId(gameId);
             detail.setUserId(userId);
             detail.setType(type);
             detail.setScore(socreMap.get(userId));
-            userGameScoreHistories.add(detail);
+            userScoreHistories.add(detail);
         });
 
         // save db
         userAssetRepository.saveAll(userAssets);
-        userScoreRepository.saveAll(userGameScoreHistories);
+        userScoreRepository.saveAll(userScoreHistories);
     }
 
     /**

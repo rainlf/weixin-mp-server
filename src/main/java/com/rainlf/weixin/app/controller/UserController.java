@@ -4,7 +4,7 @@ package com.rainlf.weixin.app.controller;
 import com.rainlf.weixin.app.dto.ApiResp;
 import com.rainlf.weixin.app.dto.UserInfoDto;
 import com.rainlf.weixin.domain.service.UserService;
-import com.rainlf.weixin.infra.db.model.User;
+import com.rainlf.weixin.infra.db.entity.User;
 import com.rainlf.weixin.infra.sso.SsoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

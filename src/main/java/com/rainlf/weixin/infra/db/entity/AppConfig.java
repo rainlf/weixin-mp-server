@@ -1,4 +1,4 @@
-package com.rainlf.weixin.infra.db.model;
+package com.rainlf.weixin.infra.db.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,17 +8,18 @@ import java.time.LocalDateTime;
 
 /**
  * @author rain
- * @date 6/22/2024 9:16 PM
+ * @date 5/21/2024 7:28 AM
  */
 @Data
 @Entity
-@Table(name = "weixin_mahjong_player")
+@Table(name = "weixin_app_config")
 @SQLRestriction("is_deleted = 0")
-public class MahjongPlayer {
+public class AppConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer userId;
+    private String key;
+    private String value;
     @Column(insertable = false)
     private boolean isDeleted;
     @Column(insertable = false, updatable = false)

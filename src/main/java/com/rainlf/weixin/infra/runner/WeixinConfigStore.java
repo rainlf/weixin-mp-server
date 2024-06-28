@@ -1,6 +1,6 @@
 package com.rainlf.weixin.infra.runner;
 
-import com.rainlf.weixin.infra.db.model.AppConfig;
+import com.rainlf.weixin.infra.db.entity.AppConfig;
 import com.rainlf.weixin.infra.db.repository.AppConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;

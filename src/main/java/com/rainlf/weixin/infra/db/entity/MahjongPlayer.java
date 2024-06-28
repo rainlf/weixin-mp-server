@@ -1,32 +1,24 @@
-package com.rainlf.weixin.infra.db.model;
+package com.rainlf.weixin.infra.db.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.DialectOverride;
 import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
 /**
  * @author rain
- * @date 5/21/2024 7:28 AM
+ * @date 6/22/2024 9:16 PM
  */
 @Data
 @Entity
-@Table(name = "weixin_user")
+@Table(name = "weixin_mahjong_player")
 @SQLRestriction("is_deleted = 0")
-public class User {
+public class MahjongPlayer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String openId;
-    private String unionId;
-    private String nickname;
-    private String avatar;
-    private String sessionKey;
-    @Column(insertable = false)
-    private boolean isAdmin;
+    private Integer userId;
     @Column(insertable = false)
     private boolean isDeleted;
     @Column(insertable = false, updatable = false)

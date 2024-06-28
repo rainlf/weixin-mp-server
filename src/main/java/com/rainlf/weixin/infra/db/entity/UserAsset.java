@@ -1,4 +1,4 @@
-package com.rainlf.weixin.infra.db.model;
+package com.rainlf.weixin.infra.db.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.rainlf.weixin.infra.db.model;
+package com.rainlf.weixin.infra.db.entity;
 
 import com.rainlf.weixin.domain.consts.MahjongFanEnum;
 import com.rainlf.weixin.domain.consts.MahjongWinCaseEnum;
@@ -15,13 +15,13 @@ import java.util.List;
  */
 @Data
 @Entity
-@Table(name = "weixin_game")
+@Table(name = "weixin_mahjong_game")
 public class MahjongGame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer recorderId;
-    private Integer score;
+    private Integer refereeUserId;
+    private Integer baseScore;
     @Convert(converter = ListMahjongFanEnumConverter.class)
     private List<MahjongFanEnum> fanList;
     private MahjongWinCaseEnum winCase;

@@ -1,10 +1,9 @@
 package com.rainlf.weixin.infra.db.repository;
 
-import com.rainlf.weixin.infra.db.model.UserAsset;
+import com.rainlf.weixin.infra.db.entity.UserAsset;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
