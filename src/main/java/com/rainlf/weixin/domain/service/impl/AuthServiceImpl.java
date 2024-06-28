@@ -57,7 +57,6 @@ public class AuthServiceImpl implements AuthService {
         if (user == null) {
             user = new User();
             user.setOpenId(weixinSession.getOpenId());
-            user.setUnionId(weixinSession.getUnionId());
             user.setSessionKey(weixinSession.getSessionKey());
             userRepository.save(user);
 

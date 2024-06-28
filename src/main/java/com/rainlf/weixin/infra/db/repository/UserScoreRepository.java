@@ -1,5 +1,6 @@
 package com.rainlf.weixin.infra.db.repository;
 
+import com.rainlf.weixin.domain.consts.UserScoreTypeEnum;
 import com.rainlf.weixin.infra.db.entity.UserScore;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ public interface UserScoreRepository extends JpaRepository<UserScore, Integer> {
     List<UserScore> findByUserId(Integer userId);
 
     List<UserScore> findByGameIdIn(List<Integer> gameIds);
+
+    List<UserScore> findByUserIdAndType(Integer userId, UserScoreTypeEnum type);
 }

@@ -46,7 +46,7 @@ public class MahjongController {
 
 
     @PostMapping("/game")
-    public ApiResp<Void> saveMahjongInfo(@RequestBody MahjongGameDto mahjongGameDto) {
+    public ApiResp<Void> saveMahjongGame(@RequestBody MahjongGameDto mahjongGameDto) {
         log.info("saveMahjongInfo, req: {}", mahjongGameDto);
         gameService.saveMahjongInfo(mahjongGameDto);
         return ApiResp.success();

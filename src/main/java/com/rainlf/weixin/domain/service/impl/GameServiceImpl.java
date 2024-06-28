@@ -4,7 +4,7 @@ import com.rainlf.weixin.app.dto.MahjongLogDto;
 import com.rainlf.weixin.app.dto.MahjongGameDto;
 import com.rainlf.weixin.app.dto.SportInfoDto;
 import com.rainlf.weixin.app.dto.UserMahjongTagDto;
-import com.rainlf.weixin.domain.consts.UserGameScoreTypeEnum;
+import com.rainlf.weixin.domain.consts.UserScoreTypeEnum;
 import com.rainlf.weixin.domain.consts.MahjongFanEnum;
 import com.rainlf.weixin.domain.consts.MahjongWinCaseEnum;
 import com.rainlf.weixin.domain.service.GameService;
@@ -44,7 +44,6 @@ public class GameServiceImpl implements GameService {
     private int randomAwardMax;
 
     private final int userTagListMaxLen = 5;
-
     private final int gameDetailPageSize = 100;
 
 
@@ -77,10 +76,10 @@ public class GameServiceImpl implements GameService {
     @Transactional(rollbackFor = Exception.class)
     public void saveMahjongInfo(MahjongGameDto mahjongGameDto) {
         MahjongGame mahjongGame = new MahjongGame();
-        mahjongGame.setRecorderId(mahjongGameDto.getRecorderId());
-        mahjongGame.setScore(mahjongGameDto.getBaseFan());
+        mahjongGame.setRefereeUserId(mahjongGameDto.getRecorderId());
+        mahjongGame.setBaseScore(mahjongGameDto.getBaseFan());
         mahjongGame.setWinCase(mahjongGameDto.getWinCase());
-        mahjongGame.setScoreExt(mahjongGameDto.getFanList());
+        mahjongGame.setFanList(mahjongGameDto.getFanList());
         mahjongGame = mahjongGameRepository.save(mahjongGame);
 
         int fan = calculateMahjongTotalFan(mahjongGameDto.getBaseFan(), mahjongGameDto.getFanList().size());
@@ -140,7 +139,7 @@ public class GameServiceImpl implements GameService {
         for (MahjongGame mahjongGame : mahjongGames) {
             Integer gameId = mahjongGame.getId();
             MahjongWinCaseEnum mahjongWinCaseEnum = mahjongGame.getWinCase();
-            List<MahjongFanEnum> mahjongFanEnums = mahjongGame.getScoreExt();
+            List<MahjongFanEnum> mahjongFanEnums = mahjongGame.getFanList();
 
 
             // create mahjong log
@@ -161,7 +160,7 @@ public class GameServiceImpl implements GameService {
 
 
             // find recorder
-            UserScore recorderDetail = userScoreList.stream().filter(x -> x.getType() == UserGameScoreTypeEnum.MAHJONG_AWARD).findFirst().orElseThrow();
+            UserScore recorderDetail = userScoreList.stream().filter(x -> x.getType() == UserScoreTypeEnum.MAHJONG_AWARD).findFirst().orElseThrow();
             User recorder = userMap.get(recorderDetail.getUserId());
             mahjongLogDto.setRecorderId(recorder.getId());
             mahjongLogDto.setRecorderName(recorder.getNickname());
@@ -169,7 +168,7 @@ public class GameServiceImpl implements GameService {
             mahjongLogDto.setRecorderAward(recorderDetail.getScore());
 
             // find winner
-            List<UserScore> winnerDetailList = userScoreList.stream().filter(x -> x.getType() == UserGameScoreTypeEnum.MAHJONG_GAME).filter(x -> x.getScore() > 0).toList();
+            List<UserScore> winnerDetailList = userScoreList.stream().filter(x -> x.getType() == UserScoreTypeEnum.MAHJONG_GAME).filter(x -> x.getScore() > 0).toList();
             List<MahjongLogDto.Item> winners = new ArrayList<>();
             for (UserScore winnerDetail : winnerDetailList) {
                 User winner = userMap.get(winnerDetail.getUserId());
@@ -183,7 +182,7 @@ public class GameServiceImpl implements GameService {
             mahjongLogDto.setWinners(winners);
 
             // find loser
-            List<UserScore> loserDetailList = userScoreList.stream().filter(x -> x.getType() == UserGameScoreTypeEnum.MAHJONG_GAME).filter(x -> x.getScore() < 0).toList();
+            List<UserScore> loserDetailList = userScoreList.stream().filter(x -> x.getType() == UserScoreTypeEnum.MAHJONG_GAME).filter(x -> x.getScore() < 0).toList();
             List<MahjongLogDto.Item> losers = new ArrayList<>();
             for (UserScore loserDetail : loserDetailList) {
                 User loser = userMap.get(loserDetail.getUserId());
@@ -209,7 +208,7 @@ public class GameServiceImpl implements GameService {
             // find game detail, get game id
             Pageable pageable = PageRequest.of(0, gameDetailPageSize, Sort.by(Sort.Direction.DESC, "id"));
 //            List<GameDetail> gameDetails = gameDetailRepository.findByUserIdAndType(userId, 0, pageable);
-            List<UserScore> userScoreHistories = userScoreRepository.findByUserIdAndType(userId, UserGameScoreTypeEnum.MAHJONG_GAME);
+            List<UserScore> userScoreHistories = userScoreRepository.findByUserIdAndType(userId, UserScoreTypeEnum.MAHJONG_GAME);
             List<Integer> gameIds = userScoreHistories.stream().map(UserScore::getGameId).toList();
 
             // find game
@@ -222,7 +221,7 @@ public class GameServiceImpl implements GameService {
                 for (MahjongGame mahjongGame : mahjongGames) {
                     // find tags
                     MahjongWinCaseEnum mahjongWinCaseEnum = mahjongGame.getWinCase();
-                    List<MahjongFanEnum> mahjongFanEnums = mahjongGame.getScoreExt();
+                    List<MahjongFanEnum> mahjongFanEnums = mahjongGame.getFanList();
                     if (mahjongWinCaseEnum != MahjongWinCaseEnum.MJ_COMMON_WIN) {
                         tags.add(mahjongWinCaseEnum.getName());
                     }
@@ -241,27 +240,27 @@ public class GameServiceImpl implements GameService {
      * change recorder asset and save game detail
      */
     private void savePlayerDetail(Integer gameId, List<User> users, Map<Integer/* userId */, Integer/* userScore */> socreMap) {
-        saveMultiGameDetail(gameId, UserGameScoreTypeEnum.MAHJONG_GAME, users, socreMap);
+        saveMultiGameDetail(gameId, UserScoreTypeEnum.MAHJONG_GAME, users, socreMap);
     }
 
     /**
      * change recorder asset and save game detail
      */
     private void saveRecorderDetail(Integer gameId, Integer userId, Integer score) {
-        saveSingleGameDetail(gameId, UserGameScoreTypeEnum.MAHJONG_AWARD, userId, score);
+        saveSingleGameDetail(gameId, UserScoreTypeEnum.MAHJONG_AWARD, userId, score);
     }
 
     /**
      * change sporter asset and save game detail
      */
     private void saveSporterDetail(Integer userId, Integer score) {
-        saveSingleGameDetail(null, UserGameScoreTypeEnum.REPAYMENT_SPORT, userId, score);
+        saveSingleGameDetail(null, UserScoreTypeEnum.REPAYMENT_SPORT, userId, score);
     }
 
     /**
      * change single user asset and save game detail
      */
-    private void saveSingleGameDetail(Integer gameId, UserGameScoreTypeEnum type, Integer userId, Integer score) {
+    private void saveSingleGameDetail(Integer gameId, UserScoreTypeEnum type, Integer userId, Integer score) {
         User user = userRepository.findById(userId).orElseThrow();
         List<User> users = Collections.singletonList(user);
         Map<Integer, Integer> socreMap = new HashMap<>();
@@ -272,7 +271,7 @@ public class GameServiceImpl implements GameService {
     /**
      * change multi user asset and save game detail
      */
-    private void saveMultiGameDetail(Integer gameId, UserGameScoreTypeEnum type, List<User> users, Map<Integer/* userId */, Integer/* userScore */> socreMap) {
+    private void saveMultiGameDetail(Integer gameId, UserScoreTypeEnum type, List<User> users, Map<Integer/* userId */, Integer/* userScore */> socreMap) {
         // find asset
         List<UserAsset> userAssets = userAssetRepository.findByUserIdIn(users.stream().map(User::getId).toList());
         Map<Integer, UserAsset> userAssetMap = userAssets.stream().collect(Collectors.toMap(UserAsset::getUserId, x -> x));

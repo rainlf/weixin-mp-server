@@ -1,6 +1,6 @@
 package com.rainlf.weixin.infra.db.entity;
 
-import com.rainlf.weixin.domain.consts.UserGameScoreTypeEnum;
+import com.rainlf.weixin.domain.consts.UserScoreTypeEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,7 +19,7 @@ public class UserScore {
     private Integer id;
     private Integer userId;
     private Integer gameId;
-    private UserGameScoreTypeEnum type;
+    private UserScoreTypeEnum type;
     private Integer score;
     @Column(insertable = false, updatable = false)
     private LocalDateTime createTime;

@@ -1,6 +1,6 @@
 package com.rainlf.weixin.infra.db.converter;
 
-import com.rainlf.weixin.domain.consts.UserGameScoreTypeEnum;
+import com.rainlf.weixin.domain.consts.UserScoreTypeEnum;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
@@ -9,16 +9,16 @@ import jakarta.persistence.Converter;
  * @date 6/25/2024 7:59 PM
  */
 @Converter(autoApply = true)
-public class UserGameScoreTypeEnumConverter implements AttributeConverter<UserGameScoreTypeEnum, String> {
+public class UserGameScoreTypeEnumConverter implements AttributeConverter<UserScoreTypeEnum, String> {
 
 
     @Override
-    public String convertToDatabaseColumn(UserGameScoreTypeEnum userGameScoreTypeEnum) {
-        return userGameScoreTypeEnum.name();
+    public String convertToDatabaseColumn(UserScoreTypeEnum userScoreTypeEnum) {
+        return userScoreTypeEnum.name();
     }
 
     @Override
-    public UserGameScoreTypeEnum convertToEntityAttribute(String s) {
-        return UserGameScoreTypeEnum.valueOf(s);
+    public UserScoreTypeEnum convertToEntityAttribute(String s) {
+        return UserScoreTypeEnum.valueOf(s);
     }
 }
