@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `weixin_user_score`
     `game_id`     int unsigned,
     `user_id`     int unsigned not null,
     `type`        varchar(128) not null,
-    `score`       int unsigned not null,
+    `score`       int          not null,
     `create_time` datetime default current_timestamp,
     `update_time` datetime default current_timestamp on update current_timestamp
 ) ENGINE = InnoDB
