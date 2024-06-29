@@ -1,20 +1,18 @@
 package com.rainlf.weixin.domain.service.impl;
 
-import com.rainlf.weixin.app.dto.MahjongLogDto;
 import com.rainlf.weixin.app.dto.MahjongGameDto;
+import com.rainlf.weixin.app.dto.MahjongLogDto;
 import com.rainlf.weixin.app.dto.SportInfoDto;
 import com.rainlf.weixin.app.dto.UserMahjongTagDto;
-import com.rainlf.weixin.domain.consts.UserScoreTypeEnum;
 import com.rainlf.weixin.domain.consts.MahjongFanEnum;
 import com.rainlf.weixin.domain.consts.MahjongWinCaseEnum;
+import com.rainlf.weixin.domain.consts.UserScoreTypeEnum;
 import com.rainlf.weixin.domain.service.GameService;
 import com.rainlf.weixin.infra.db.entity.*;
 import com.rainlf.weixin.infra.db.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -205,32 +203,32 @@ public class GameServiceImpl implements GameService {
     public List<UserMahjongTagDto> getUserMahjongTags(List<Integer> userIds) {
         List<UserMahjongTagDto> result = new ArrayList<>();
         for (Integer userId : userIds) {
-            // find game detail, get game id
-            Pageable pageable = PageRequest.of(0, gameDetailPageSize, Sort.by(Sort.Direction.DESC, "id"));
-//            List<GameDetail> gameDetails = gameDetailRepository.findByUserIdAndType(userId, 0, pageable);
-            List<UserScore> userScoreHistories = userScoreRepository.findByUserIdAndType(userId, UserScoreTypeEnum.MAHJONG_GAME);
-            List<Integer> gameIds = userScoreHistories.stream().map(UserScore::getGameId).toList();
+            List<UserScore> userScoreList = userScoreRepository.findByUserIdAndType(userId, UserScoreTypeEnum.MAHJONG_GAME);
+            // last 10 games of user with winner case
+            List<Integer> gameIds = userScoreList.stream()
+                    .filter(x -> x.getScore() > 0)
+                    .sorted(Comparator.comparing(UserScore::getCreateTime).reversed())
+                    .limit(10)
+                    .map(UserScore::getGameId)
+                    .toList();
 
-            // find game
-            if (!gameIds.isEmpty()) {
-                List<MahjongGame> mahjongGames = mahjongGameRepository.findByIdIn(gameIds);
+            List<MahjongGame> gameList = mahjongGameRepository.findByIdIn(gameIds);
+            List<String> userTags = gameList.stream()
+                    .flatMap(x -> {
+                        List<String> gameTags = new ArrayList<>();
+                        if (x.getWinCase() == MahjongWinCaseEnum.MJ_SELF_TOUCH_WIN) {
+                            gameTags.add(x.getWinCase().getName());
+                        }
+                        gameTags.addAll(x.getFanList().stream().map(MahjongFanEnum::getName).toList());
+                        return gameTags.stream();
+                    })
+                    .distinct()
+                    .toList();
 
-                UserMahjongTagDto userMahjongTagDto = new UserMahjongTagDto();
-                userMahjongTagDto.setUserId(userId);
-                List<String> tags = new ArrayList<>();
-                for (MahjongGame mahjongGame : mahjongGames) {
-                    // find tags
-                    MahjongWinCaseEnum mahjongWinCaseEnum = mahjongGame.getWinCase();
-                    List<MahjongFanEnum> mahjongFanEnums = mahjongGame.getFanList();
-                    if (mahjongWinCaseEnum != MahjongWinCaseEnum.MJ_COMMON_WIN) {
-                        tags.add(mahjongWinCaseEnum.getName());
-                    }
-                    tags.addAll(mahjongFanEnums.stream().map(MahjongFanEnum::getName).toList());
-
-                    userMahjongTagDto.setTags(tags.subList(0, Math.min(tags.size(), userTagListMaxLen)));
-                }
-                result.add(userMahjongTagDto);
-            }
+            UserMahjongTagDto dto = new UserMahjongTagDto();
+            dto.setUserId(userId);
+            dto.setTags(userTags);
+            result.add(dto);
         }
 
         return result;
