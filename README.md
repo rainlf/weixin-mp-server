@@ -8,6 +8,12 @@
 4. 如需访问微信服务器，私信我要appId与appSecret
 5. Just have fun
 
+## 本地测试
+```shell
+## 示例
+java -Dlogging.level.com.rainlf=debug -jar ./latest/weixin-mp-server-2.0.jar  --spring.datasource.url=jdbc:mysql://192.168.31.90:3306/weixin?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+```
+
 ## 微信登录流程图
 ![image](https://github.com/rainlf/weixin-mp-server/assets/10525928/d0298d46-462b-4a68-9bb0-316bec29945e)
 
