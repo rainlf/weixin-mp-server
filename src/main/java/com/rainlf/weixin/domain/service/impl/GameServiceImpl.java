@@ -139,10 +139,10 @@ public class GameServiceImpl implements GameService {
             MahjongWinCaseEnum mahjongWinCaseEnum = mahjongGame.getWinCase();
             List<MahjongFanEnum> mahjongFanEnums = mahjongGame.getFanList();
 
-
             // create mahjong log
             MahjongLogDto mahjongLogDto = new MahjongLogDto();
             mahjongLogDto.setGameId(gameId);
+            mahjongLogDto.setCreateTime(mahjongGame.getCreateTime());
 
             // set tags
             List<String> tags = new ArrayList<>();

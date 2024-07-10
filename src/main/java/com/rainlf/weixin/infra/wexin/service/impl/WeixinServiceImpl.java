@@ -41,6 +41,7 @@ public class WeixinServiceImpl implements WeixinService {
                 .append("&").append("js_code").append("=").append(code)
                 .append("&").append("grant_type").append("=").append("authorization_code");
 
+        log.debug("weixin be login url: {}", sb);
         String respStr = restTemplate.getForObject(sb.toString(), String.class);
         log.info("code2Session, resp: {}", respStr);
         WeixinSession resp = JsonUtils.toObject(respStr, WeixinSession.class);

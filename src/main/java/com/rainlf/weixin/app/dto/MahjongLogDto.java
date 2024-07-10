@@ -2,6 +2,7 @@ package com.rainlf.weixin.app.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ public class MahjongLogDto {
     private List<String> gameTags;
     private List<Item> winners;
     private List<Item> losers;
+    private LocalDateTime createTime;
 
     @Data
     public static class Item {
