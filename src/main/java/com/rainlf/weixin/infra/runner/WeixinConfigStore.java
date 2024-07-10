@@ -5,6 +5,7 @@ import com.rainlf.weixin.infra.db.repository.AppConfigRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Map;
  * @date 6/23/2024 8:20 PM
  */
 @Slf4j
-@Component
+@Service
 public class WeixinConfigStore {
     @Autowired
     private AppConfigRepository appConfigRepository;
@@ -24,8 +25,8 @@ public class WeixinConfigStore {
 
     public String getValue(String key) {
         if (configMap.isEmpty()) {
-            log.info("WeixinConfigStore, load config");
             List<AppConfig> appConfigs = appConfigRepository.findAll();
+            log.info("WeixinConfigStore, load config, appConfigs size: {}", appConfigs.size());
             for (AppConfig appConfig : appConfigs) {
                 log.debug("WeixinConfigStore, key: {}, value: {}", appConfig.getKey(), appConfig.getValue());
                 configMap.put(appConfig.getKey(), appConfig.getValue());
