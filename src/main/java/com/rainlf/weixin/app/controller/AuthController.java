@@ -2,10 +2,18 @@ package com.rainlf.weixin.app.controller;
 
 import com.rainlf.weixin.app.dto.ApiResp;
 import com.rainlf.weixin.domain.service.AuthService;
+import com.rainlf.weixin.infra.db.entity.User;
+import com.rainlf.weixin.infra.db.repository.UserRepository;
 import com.rainlf.weixin.infra.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Base64;
 
 /**
  * @author rain
@@ -17,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     private AuthService authService;
+    @Autowired
+    private UserRepository userRepo;
 
     @GetMapping("/test")
     public ApiResp<String> test() {

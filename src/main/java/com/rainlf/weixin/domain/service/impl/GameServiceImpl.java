@@ -158,12 +158,15 @@ public class GameServiceImpl implements GameService {
 
 
             // find recorder
-            UserScore recorderDetail = userScoreList.stream().filter(x -> x.getType() == UserScoreTypeEnum.MAHJONG_AWARD).findFirst().orElseThrow();
-            User recorder = userMap.get(recorderDetail.getUserId());
-            mahjongLogDto.setRecorderId(recorder.getId());
-            mahjongLogDto.setRecorderName(recorder.getNickname());
-            mahjongLogDto.setRecorderAvatar(recorder.getAvatar());
-            mahjongLogDto.setRecorderAward(recorderDetail.getScore());
+            UserScore recorderDetail = userScoreList.stream().filter(x -> x.getType() == UserScoreTypeEnum.MAHJONG_AWARD).findFirst().orElse(null );
+            if (recorderDetail != null) {
+                User recorder = userMap.get(recorderDetail.getUserId());
+                mahjongLogDto.setRecorderId(recorder.getId());
+                mahjongLogDto.setRecorderName(recorder.getNickname());
+                mahjongLogDto.setRecorderAvatar(recorder.getAvatar());
+                mahjongLogDto.setRecorderAward(recorderDetail.getScore());
+            }
+
 
             // find winner
             List<UserScore> winnerDetailList = userScoreList.stream().filter(x -> x.getType() == UserScoreTypeEnum.MAHJONG_GAME).filter(x -> x.getScore() > 0).toList();

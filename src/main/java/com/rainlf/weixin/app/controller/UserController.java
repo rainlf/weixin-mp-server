@@ -5,11 +5,19 @@ import com.rainlf.weixin.app.dto.ApiResp;
 import com.rainlf.weixin.app.dto.UserInfoDto;
 import com.rainlf.weixin.domain.service.UserService;
 import com.rainlf.weixin.infra.db.entity.User;
+import com.rainlf.weixin.infra.db.repository.UserRepository;
 import com.rainlf.weixin.infra.sso.SsoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -24,6 +32,8 @@ public class UserController {
     public SsoService ssoService;
     @Autowired
     public UserService userService;
+    @Autowired
+    private UserRepository userRepo;
 
     @GetMapping("/current")
     public ApiResp<UserInfoDto> getCurrentUser() {
@@ -43,4 +53,27 @@ public class UserController {
     public ApiResp<List<UserInfoDto>> allInitedUser() {
         return ApiResp.success(userService.getAllInitedUser());
     }
+
+    @PostMapping("/uploadAvatar")
+    public ApiResp<Void> uploadFile(@RequestParam("userId") Integer userId, @RequestParam("file") MultipartFile file) throws IOException {
+        byte[] bytes = file.getBytes();
+        String value = Base64.getEncoder().encodeToString(bytes);
+        User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("用户不存在"));
+        user.setAvatar(value);
+        userRepo.save(user);
+        return ApiResp.success();
+    }
+
+    @GetMapping("/getAvatar")
+    public ResponseEntity<byte[]> getImage(@RequestParam("userId") Integer userId) {
+        User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("用户不存在"));
+        String value = user.getAvatar();
+        byte[] bytes = Base64.getDecoder().decode(value);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+    }
 }
+
+
