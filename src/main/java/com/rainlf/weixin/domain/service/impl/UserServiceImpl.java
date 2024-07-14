@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             userInfoDto.setId(user.getId());
             userInfoDto.setNickname(user.getNickname());
-            userInfoDto.setAvatar(user.getAvatar());
+//            userInfoDto.setAvatar(user.getAvatar());
         }
         if (userAsset != null) {
             userInfoDto.setCopperCoin(userAsset.getCopperCoin());

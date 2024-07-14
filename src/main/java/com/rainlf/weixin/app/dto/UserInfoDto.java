@@ -10,7 +10,7 @@ import lombok.Data;
 public class UserInfoDto {
     private Integer id;
     private String nickname;
-    private String avatar;
+//    private String avatar;
     private Integer copperCoin;
     private Integer silverCoin;
     private Integer goldCoin;

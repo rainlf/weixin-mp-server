@@ -163,7 +163,7 @@ public class GameServiceImpl implements GameService {
                 User recorder = userMap.get(recorderDetail.getUserId());
                 mahjongLogDto.setRecorderId(recorder.getId());
                 mahjongLogDto.setRecorderName(recorder.getNickname());
-                mahjongLogDto.setRecorderAvatar(recorder.getAvatar());
+//                mahjongLogDto.setRecorderAvatar(recorder.getAvatar());
                 mahjongLogDto.setRecorderAward(recorderDetail.getScore());
             }
 
@@ -176,7 +176,7 @@ public class GameServiceImpl implements GameService {
                 MahjongLogDto.Item winnerItem = new MahjongLogDto.Item();
                 winnerItem.setUserId(winner.getId());
                 winnerItem.setUserName(winner.getNickname());
-                winnerItem.setUserAvatar(winner.getAvatar());
+//                winnerItem.setUserAvatar(winner.getAvatar());
                 winnerItem.setScore(winnerDetail.getScore());
                 winners.add(winnerItem);
             }
@@ -190,7 +190,7 @@ public class GameServiceImpl implements GameService {
                 MahjongLogDto.Item loserItem = new MahjongLogDto.Item();
                 loserItem.setUserId(loser.getId());
                 loserItem.setUserName(loser.getNickname());
-                loserItem.setUserAvatar(loser.getAvatar());
+//                loserItem.setUserAvatar(loser.getAvatar());
                 loserItem.setScore(loserDetail.getScore());
                 losers.add(loserItem);
             }

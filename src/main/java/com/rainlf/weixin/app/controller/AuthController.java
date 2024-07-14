@@ -50,4 +50,15 @@ public class AuthController {
         JwtUtils.getOpenId(token);
         return ApiResp.success();
     }
+
+    @GetMapping("/getAvatar")
+    public ResponseEntity<byte[]> getImage(@RequestParam("userId") Integer userId) {
+        User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("用户不存在"));
+        String value = user.getAvatar();
+        byte[] bytes = Base64.getDecoder().decode(value);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+    }
 }

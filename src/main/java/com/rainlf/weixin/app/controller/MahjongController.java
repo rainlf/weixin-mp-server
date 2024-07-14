@@ -65,12 +65,4 @@ public class MahjongController {
         log.info("getMahjongLogs, size: {}", result.size());
         return ApiResp.success(result);
     }
-
-//    @GetMapping("/logs/page")
-//    public ApiResp<List<MahjongLogDto>> getMahjongLogs() {
-//        log.info("getMahjongLogs");
-//        List<MahjongLogDto> result = gameService.getMahjongLogs();
-//        log.info("getMahjongLogs, size: {}", result.size());
-//        return ApiResp.success(result);
-//    }
 }

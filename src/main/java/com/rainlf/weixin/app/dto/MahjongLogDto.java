@@ -14,7 +14,6 @@ public class MahjongLogDto {
     private Integer gameId;
     private Integer recorderId;
     private String recorderName;
-    private String recorderAvatar;
     private Integer recorderAward;
     private List<String> gameTags;
     private List<Item> winners;
