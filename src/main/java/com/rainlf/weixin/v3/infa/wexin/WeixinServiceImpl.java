@@ -1,6 +1,6 @@
 package com.rainlf.weixin.v3.infa.wexin;
 
-import com.rainlf.weixin.v1.infra.util.JsonUtils;
+import com.alibaba.fastjson2.JSON;
 import com.rainlf.weixin.v3.infa.db.entity.AppConfigDO;
 import com.rainlf.weixin.v3.infa.db.repository.AppConfigDORepository;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class WeixinServiceImpl implements WeixinService {
         log.debug("weixin be login url: {}", url);
         String respStr = restTemplate.getForObject(url, String.class);
         log.info("code2Session, resp: {}", respStr);
-        WeixinSession resp = JsonUtils.toObject(respStr, WeixinSession.class);
+        WeixinSession resp = JSON.parseObject(respStr, WeixinSession.class);
 
         Assert.notNull(resp, "code2Session error, resp is null");
         Assert.isTrue(resp.valid(), "code2Session error, resp is invalid: " + respStr);
