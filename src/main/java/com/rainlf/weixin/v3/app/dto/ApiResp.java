@@ -1,4 +1,4 @@
-package com.rainlf.weixin.v1.app.dto;
+package com.rainlf.weixin.v3.app.dto;
 
 import lombok.Data;
 

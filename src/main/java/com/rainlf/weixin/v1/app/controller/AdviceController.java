@@ -1,6 +1,6 @@
 package com.rainlf.weixin.v1.app.controller;
 
-import com.rainlf.weixin.v1.app.dto.ApiResp;
+import com.rainlf.weixin.v3.app.dto.ApiResp;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,7 +1,7 @@
 package com.rainlf.weixin.v1.app.controller;
 
 
-import com.rainlf.weixin.v1.app.dto.ApiResp;
+import com.rainlf.weixin.v3.app.dto.ApiResp;
 import com.rainlf.weixin.v1.app.dto.UserInfoDto;
 import com.rainlf.weixin.v1.domain.service.UserService;
 import com.rainlf.weixin.v1.infra.db.entity.User;
