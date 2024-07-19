@@ -34,10 +34,10 @@ public class WeixinServiceImpl implements WeixinService {
         log.info("code2Session, code: {}", code);
         StringBuilder sb = new StringBuilder();
         sb.append(code2SessionUrl)
-                .append("?").append("appid").append("=").append(weixinConfigStore.getValue(weixinAppIdKey))
-                .append("&").append("secret").append("=").append(weixinConfigStore.getValue(weixinSecretKey))
-                .append("&").append("js_code").append("=").append(code)
-                .append("&").append("grant_type").append("=").append("authorization_code");
+                .append("?appid=").append(weixinConfigStore.getValue(weixinAppIdKey))
+                .append("&secret=").append(weixinConfigStore.getValue(weixinSecretKey))
+                .append("&js_code=").append(code)
+                .append("&grant_type=authorization_code");
 
         log.debug("weixin be login url: {}", sb);
         String respStr = restTemplate.getForObject(sb.toString(), String.class);
