@@ -59,11 +59,11 @@ public class JJwtUtils {
                     .parseSignedClaims(token)
                     .getPayload();
         } catch (ExpiredJwtException e) {
-            throw new RuntimeException("token 已过期");
+            throw new RuntimeException("invalid jwt token, token expired");
         } catch (JwtException e) {
-            throw new RuntimeException("token 已失效");
+            throw new RuntimeException("invalid jwt token, token invalid");
         } catch (Exception e) {
-            throw new RuntimeException("token 解析失败");
+            throw new RuntimeException("invalid jwt token, parse token error");
         }
     }
 }
