@@ -20,6 +20,7 @@
         <flyway.version>10.13.0</flyway.version>
         <guava.version>33.2.0-jre</guava.version>
         <jjwt.version>0.12.5</jjwt.version>
+        <fastjson2.version>2.0.52</fastjson2.version>
     </properties>
 
     <dependencies>
@@ -50,6 +51,11 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <version>${fastjson2.version}</version>
         </dependency>
 
         <dependency>
