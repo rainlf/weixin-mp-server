@@ -12,5 +12,7 @@ public interface AuthService {
 
     UserDO getUser();
 
+    void cleanUser();
+
     String createToken(String openId);
 }

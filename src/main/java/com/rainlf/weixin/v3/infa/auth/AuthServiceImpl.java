@@ -20,7 +20,8 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private UserDORepository userDORepository;
 
-    private volatile UserDO user;
+    // 线程登录态，线程隔离
+    private final ThreadLocal<UserDO> userDOThreadLocal = new ThreadLocal<>();
 
     @Override
     public boolean passAuthCheck(String token) {
@@ -30,14 +31,20 @@ public class AuthServiceImpl implements AuthService {
 
         Optional<UserDO> userDO = userDORepository.findByOpenId(openId);
         Assert.isTrue(userDO.isPresent(), "invalid jwt token, user not found, openId: " + openId);
-        user = userDO.get();
+        userDOThreadLocal.set(userDO.get());
         return true;
     }
 
     @Override
     public UserDO getUser() {
+        UserDO user = userDOThreadLocal.get();
         Assert.notNull(user, "user not login");
         return user;
+    }
+
+    @Override
+    public void cleanUser() {
+        userDOThreadLocal.remove();
     }
 
     @Override
