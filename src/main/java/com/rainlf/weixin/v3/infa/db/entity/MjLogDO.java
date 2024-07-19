@@ -20,8 +20,9 @@ public class MjLogDO {
     private Integer id;
     private Integer userId;
     private Integer userType;
+    private Integer winType;
     private Integer point;
-    private String pointMultipliers;
+    private String pointOperators;
     private Integer totalPoint;
     private Integer score;
     @Column(name = "is_deleted", insertable = false)
