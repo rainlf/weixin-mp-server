@@ -2,6 +2,7 @@ package com.rainlf.weixin.v3.app.controller;
 
 import com.rainlf.weixin.v3.app.dto.UserDTO;
 import com.rainlf.weixin.v3.app.dto.base.ApiResp;
+import com.rainlf.weixin.v3.app.dto.mapper.UserDTOMapper;
 import com.rainlf.weixin.v3.domain.mahjong.UserSevice;
 import com.rainlf.weixin.v3.infa.auth.AuthService;
 import com.rainlf.weixin.v3.infa.db.entity.UserDO;
@@ -23,10 +24,13 @@ public class UserController {
     private UserSevice userSevice;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private UserDTOMapper userDTOMapper;
 
     @GetMapping("/current")
     public ApiResp<UserDTO> getCurrentUser() {
         UserDO userDO = authService.getUser();
-        return ApiResp.success();
+        UserDTO userDTO = userDTOMapper.fromUserDO(userDO);
+        return ApiResp.success(userDTO);
     }
 }
