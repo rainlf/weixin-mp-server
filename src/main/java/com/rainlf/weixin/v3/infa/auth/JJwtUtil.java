@@ -14,6 +14,7 @@ import java.util.UUID;
  * @date 7/19/2024 5:39 PM
  */
 public class JJwtUtil {
+    private final String SIGNER = "rain";
     private final String SECRET = "rain-012345679";
     private final long defaultExpire = 1000 * 60 * 60 * 24 * 180L; //默认过期时间180天
 
@@ -37,7 +38,7 @@ public class JJwtUtil {
         Date now = new Date();
         // 生成token
         builder.id(UUID.randomUUID().toString()) //id 这个可以不填，但是建议填
-                .issuer("Rain") //签发者
+                .issuer(SIGNER) //签发者
                 .claims(claims) //数据
                 .subject(subject) //主题
                 .issuedAt(now) //签发时间
