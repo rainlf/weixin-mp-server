@@ -1,4 +1,4 @@
-package com.rainlf.weixin.v1.infra.wexin.model;
+package com.rainlf.weixin.v3.infa.wexin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

@@ -1,9 +1,7 @@
-package com.rainlf.weixin.v1.infra.wexin.service.impl;
+package com.rainlf.weixin.v3.infa.wexin;
 
 import com.rainlf.weixin.v1.infra.runner.WeixinConfigStore;
 import com.rainlf.weixin.v1.infra.util.JsonUtils;
-import com.rainlf.weixin.v1.infra.wexin.model.WeixinSession;
-import com.rainlf.weixin.v1.infra.wexin.service.WeixinService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,6 +1,4 @@
-package com.rainlf.weixin.v1.infra.wexin.service;
-
-import com.rainlf.weixin.v1.infra.wexin.model.WeixinSession;
+package com.rainlf.weixin.v3.infa.wexin;
 
 /**
  * @author rain
