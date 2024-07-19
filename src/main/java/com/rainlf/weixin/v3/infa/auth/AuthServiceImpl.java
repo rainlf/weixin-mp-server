@@ -24,7 +24,8 @@ public class AuthServiceImpl implements AuthService {
     private final ThreadLocal<UserDO> userDOThreadLocal = new ThreadLocal<>();
 
     @Override
-    public boolean passAuthCheck(String token) {
+    public void authToken(String token) {
+        log.info("auth token: {}", token);
         Claims claims = JJwtUtils.claims(token);
         String openId = claims.getSubject();
         Assert.notNull(openId, "invalid jwt token, openId is null");
@@ -32,7 +33,6 @@ public class AuthServiceImpl implements AuthService {
         Optional<UserDO> userDO = userDORepository.findByOpenId(openId);
         Assert.isTrue(userDO.isPresent(), "invalid jwt token, user not found, openId: " + openId);
         userDOThreadLocal.set(userDO.get());
-        return true;
     }
 
     @Override

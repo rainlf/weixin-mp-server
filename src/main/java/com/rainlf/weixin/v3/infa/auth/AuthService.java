@@ -8,7 +8,7 @@ import com.rainlf.weixin.v3.infa.db.entity.UserDO;
  */
 public interface AuthService {
 
-    boolean passAuthCheck(String token);
+    void authToken(String token);
 
     UserDO getUser();
 
