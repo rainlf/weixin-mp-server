@@ -4,6 +4,8 @@ import com.rainlf.weixin.v3.infa.db.entity.AppConfigDO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * @author rain
  * @date 7/19/2024 2:29 PM
@@ -11,5 +13,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppConfigDORepository extends JpaRepository<AppConfigDO, Integer> {
 
-    AppConfigDO findByKey(String key);
+    Optional<AppConfigDO> findByKey(String key);
 }
