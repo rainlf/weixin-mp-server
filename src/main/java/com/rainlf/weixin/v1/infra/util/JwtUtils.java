@@ -1,9 +1,6 @@
 package com.rainlf.weixin.v1.infra.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwsHeader;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecureDigestAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +17,7 @@ import java.util.UUID;
  */
 @Slf4j
 public class JwtUtils {
+
 
     /**
      * 过期时间(单位:天)
