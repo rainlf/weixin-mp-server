@@ -9,4 +9,6 @@ public interface CacheService {
     String set(String key, String value);
 
     String get(String key);
+
+    boolean containsKey(String key);
 }

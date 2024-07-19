@@ -17,8 +17,6 @@ import org.springframework.web.client.RestTemplate;
 public class WeixinServiceImpl implements WeixinService {
     @Autowired
     private RestTemplate restTemplate;
-    @Autowired
-    private WeixinConfigStore weixinConfigStore;
 
     @Value("${weixin.appid.key}")
     private String weixinAppIdKey;

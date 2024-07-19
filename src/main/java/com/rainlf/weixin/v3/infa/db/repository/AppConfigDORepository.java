@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AppConfigDORepository extends JpaRepository<AppConfigDO, Integer> {
+
+    AppConfigDO findByKey(String key);
 }

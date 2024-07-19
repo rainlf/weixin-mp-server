@@ -27,4 +27,9 @@ public class CacheServiceImpl implements CacheService {
     public String get(String key) {
         return cache.get(key);
     }
+
+    @Override
+    public boolean containsKey(String key) {
+        return cache.containsKey(key);
+    }
 }
