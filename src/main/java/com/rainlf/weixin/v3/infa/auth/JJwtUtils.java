@@ -13,27 +13,27 @@ import java.util.UUID;
  * @author rain
  * @date 7/19/2024 5:39 PM
  */
-public class JJwtUtil {
-    private final String SIGNER = "rain";
-    private final String SECRET = "rain-012345679";
-    private final long defaultExpire = 1000 * 60 * 60 * 24 * 180L; //默认过期时间180天
+public class JJwtUtils {
+    private static final String SIGNER = "rain";
+    private static final String SECRET = "rain-012345679";
+    private static final long defaultExpire = 1000 * 60 * 60 * 24 * 180L; //默认过期时间180天
 
     //创建一个jwt密钥 加密和解密都需要用这个玩意
-    private final SecretKey key = Jwts.SIG.HS256.key()
+    private static final SecretKey key = Jwts.SIG.HS256.key()
             .random(new SecureRandom(SECRET.getBytes(StandardCharsets.UTF_8)))
             .build();
 
     /**
      * 使用默认过期时间（7天），生成一个JWT
      */
-    public String createToken(String subject) {
+    public static String createToken(String subject) {
         return createToken(subject, null, defaultExpire);
     }
 
     /**
      * 生成token
      */
-    public String createToken(String subject, Map<String, Object> claims, Long expire) {
+    public static String createToken(String subject, Map<String, Object> claims, Long expire) {
         JwtBuilder builder = Jwts.builder();
         Date now = new Date();
         // 生成token
@@ -51,7 +51,7 @@ public class JJwtUtil {
     /**
      * 解析token
      */
-    public Claims claims(String token) {
+    public static Claims claims(String token) {
         try {
             return Jwts.parser()
                     .verifyWith(key)
