@@ -1,6 +1,6 @@
 package com.rainlf.weixin.v3.app.controller;
 
-import com.rainlf.weixin.v3.app.dto.ApiResp;
+import com.rainlf.weixin.v3.app.dto.base.ApiResp;
 import com.rainlf.weixin.v3.infa.auth.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 public class LoginController {
 
     @Autowired
