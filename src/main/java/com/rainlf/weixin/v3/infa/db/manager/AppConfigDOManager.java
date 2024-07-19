@@ -1,4 +1,4 @@
-package com.rainlf.weixin.v3.infa.db;
+package com.rainlf.weixin.v3.infa.db.manager;
 
 import com.rainlf.weixin.v3.infa.cache.CacheService;
 import com.rainlf.weixin.v3.infa.db.entity.AppConfigDO;

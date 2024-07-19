@@ -1,7 +1,7 @@
 package com.rainlf.weixin.v3.infa.wexin;
 
-import com.rainlf.weixin.v1.infra.runner.WeixinConfigStore;
 import com.rainlf.weixin.v1.infra.util.JsonUtils;
+import com.rainlf.weixin.v3.infa.db.manager.AppConfigDOManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,35 +17,32 @@ import org.springframework.web.client.RestTemplate;
 public class WeixinServiceImpl implements WeixinService {
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private AppConfigDOManager appConfigDOManager;
 
     @Value("${weixin.appid.key}")
     private String weixinAppIdKey;
-
     @Value("${weixin.secret.key}")
     private String weixinSecretKey;
-
     @Value("${weixin.api.code2Session}")
     private String code2SessionUrl;
 
     @Override
     public WeixinSession code2Session(String code) {
         log.info("code2Session, code: {}", code);
-        StringBuilder sb = new StringBuilder();
-        sb.append(code2SessionUrl)
-                .append("?appid=").append(weixinConfigStore.getValue(weixinAppIdKey))
-                .append("&secret=").append(weixinConfigStore.getValue(weixinSecretKey))
-                .append("&js_code=").append(code)
-                .append("&grant_type=authorization_code");
+        String appId = appConfigDOManager.getAppConfig(weixinAppIdKey);
+        String appSecret = appConfigDOManager.getAppConfig(weixinSecretKey);
+        String url = String.format("%s?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
+                code2SessionUrl, appId, appSecret, code);
 
-        log.debug("weixin be login url: {}", sb);
-        String respStr = restTemplate.getForObject(sb.toString(), String.class);
+        log.debug("weixin be login url: {}", url);
+        String respStr = restTemplate.getForObject(url, String.class);
         log.info("code2Session, resp: {}", respStr);
         WeixinSession resp = JsonUtils.toObject(respStr, WeixinSession.class);
 
         if (resp == null) {
             throw new RuntimeException("code2Session error, resp is null");
         }
-
         if (!resp.valid()) {
             throw new RuntimeException("code2Session error, resp is invalid: " + resp);
         }
