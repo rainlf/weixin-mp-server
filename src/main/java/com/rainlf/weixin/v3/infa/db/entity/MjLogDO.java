@@ -18,6 +18,7 @@ public class MjLogDO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String gameId;
     private Integer userId;
     private Integer userType;
     private Integer winType;

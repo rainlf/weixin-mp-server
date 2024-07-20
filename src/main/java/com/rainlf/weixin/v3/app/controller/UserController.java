@@ -1,5 +1,6 @@
 package com.rainlf.weixin.v3.app.controller;
 
+import com.rainlf.weixin.v3.app.dto.TopUsersDTO;
 import com.rainlf.weixin.v3.app.dto.UserDTO;
 import com.rainlf.weixin.v3.app.dto.base.ApiResp;
 import com.rainlf.weixin.v3.app.dto.mapper.UserDTOMapper;
@@ -33,4 +34,12 @@ public class UserController {
         UserDTO userDTO = userDTOMapper.fromUserDO(userDO);
         return ApiResp.success(userDTO);
     }
+
+    @GetMapping("/top")
+    public ApiResp<TopUsersDTO> getTopUsers() {
+        TopUsersDTO topUsersDTO = userSevice.getTopUsers();
+        return ApiResp.success(topUsersDTO);
+    }
+
+
 }
