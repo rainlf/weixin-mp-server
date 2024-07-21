@@ -112,23 +112,22 @@
                     </excludes>
                 </configuration>
             </plugin>
-<!--            # // rain-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--&lt;!&ndash;                    <source>1.8</source> &lt;!&ndash; depending on your project &ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;                    <target>1.8</target> &lt;!&ndash; depending on your project &ndash;&gt;&ndash;&gt;-->
-<!--                    <annotationProcessorPaths>-->
-<!--                        <path>-->
-<!--                            <groupId>org.mapstruct</groupId>-->
-<!--                            <artifactId>mapstruct-processor</artifactId>-->
-<!--                            <version>${org.mapstruct.version}</version>-->
-<!--                        </path>-->
-<!--                        &lt;!&ndash; other annotation processors &ndash;&gt;-->
-<!--                    </annotationProcessorPaths>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!--                    <source>1.8</source> &lt;!&ndash; depending on your project &ndash;&gt;-->
+                    <!--                    <target>1.8</target> &lt;!&ndash; depending on your project &ndash;&gt;-->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                        <!-- other annotation processors -->
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

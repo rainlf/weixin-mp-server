@@ -1,4 +1,4 @@
-package com.rainlf.weixin.v3.app.controller.advice;
+package com.rainlf.weixin.v3.app.controller;
 
 import com.rainlf.weixin.v3.app.dto.ApiResp;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Slf4j
 @ControllerAdvice
-public class AdviceController {
+public class AdviceComponent {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public ApiResp<String> handleException(Exception exception, HttpServletResponse response) {

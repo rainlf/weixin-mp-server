@@ -33,6 +33,14 @@ public enum MjPointOperatorEnum {
         this.operatorValue = operatorValue;
     }
 
+    public static MjPointOperatorEnum fromCode(int code) {
+        for (MjPointOperatorEnum value : MjPointOperatorEnum.values()) {
+            if (value.code == code) {
+                return value;
+            }
+        }
+        return null;
+    }
 
     @Getter
     public enum OperatorType {

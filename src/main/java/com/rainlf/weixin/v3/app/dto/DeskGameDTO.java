@@ -1,5 +1,8 @@
 package com.rainlf.weixin.v3.app.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.rainlf.weixin.v3.app.deserializer.MjGameTypeEnumDeserializer;
+import com.rainlf.weixin.v3.app.deserializer.MjPointOperatorEnumListDeserializer;
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjGameTypeEnum;
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjPointOperatorEnum;
 import lombok.Data;
@@ -13,6 +16,7 @@ import java.util.List;
 @Data
 public class DeskGameDTO {
     private Integer recordrId;
+    @JsonDeserialize(using = MjGameTypeEnumDeserializer.class)
     private MjGameTypeEnum gameType;
     private List<Item> winners;
     private List<Item> losers;
@@ -21,6 +25,7 @@ public class DeskGameDTO {
     public static class Item {
         private Integer userId;
         private Integer point;
+        @JsonDeserialize(using = MjPointOperatorEnumListDeserializer.class)
         private List<MjPointOperatorEnum> pointOperators;
         private Integer score;
     }
