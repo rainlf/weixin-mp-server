@@ -86,7 +86,8 @@ public class MjServiceImpl implements MjService {
             mjLogDTOs.add(mjLogDTO);
         }
 
-
+        // order by createTime desc
+        mjLogDTOs.sort((o1, o2) -> o2.getCreateTime().compareTo(o1.getCreateTime()));
         return mjLogDTOs;
     }
 
