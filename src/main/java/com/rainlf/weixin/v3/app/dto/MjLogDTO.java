@@ -13,12 +13,12 @@ import java.util.List;
 @Data
 public class MjLogDTO {
     private String gameId;
-    private boolean canDelete;
     private String gameType;
+    private boolean canDelete;
+    private LocalDateTime createTime;
+    private Player recordUser;
     private List<Player> winners;
     private List<Player> losers;
-    private Player recordUser;
-    private LocalDateTime createTime;
 
     @Data
     public static class Player {

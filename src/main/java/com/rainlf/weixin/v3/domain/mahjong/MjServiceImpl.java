@@ -32,11 +32,11 @@ public class MjServiceImpl implements MjService {
 
     @Override
     public List<MjLogDTO> getMjLogs() {
+        List<MjLogDTO> mjLogDTOs = new ArrayList<>();
         List<MjLog> mjLogs = mjLogRepository.findAll();
 
         // create dto by log
         Map<String, List<MjLog>> gameMjLogMap = mjLogs.stream().collect(Collectors.groupingBy(MjLog::getGameId));
-        List<MjLogDTO> mjLogDTOs = new ArrayList<>();
         for (Map.Entry<String, List<MjLog>> entry : gameMjLogMap.entrySet()) {
             MjLogDTO mjLogDTO = new MjLogDTO();
             String gameId = entry.getKey();
@@ -83,11 +83,11 @@ public class MjServiceImpl implements MjService {
                 losers.add(new MjLogDTO.Player(loser.getId(), loser.getNickname(), loserLog.getScore(), tags));
             }
             mjLogDTO.setLosers(losers);
-
+            mjLogDTOs.add(mjLogDTO);
         }
 
 
-        return List.of();
+        return mjLogDTOs;
     }
 
     @Override
