@@ -34,7 +34,11 @@ public enum MjGameTypeEnum {
         return null;
     }
 
-    public boolean isHide() {
-        return this == PING_HU || this == ONLINE_MJ;
+    public boolean isWinnerType() {
+        return this == ZI_MO;
+    }
+
+    public boolean isLoserType() {
+        return this == YI_PAO_SHUANG_XIANG || this == YI_PAO_SAN_XIANG;
     }
 }

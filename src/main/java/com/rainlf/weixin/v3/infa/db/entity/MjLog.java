@@ -42,7 +42,9 @@ public class MjLog {
 
     public List<String> getTags() {
         List<String> tags = pointOperators.stream().map(MjPointOperatorEnum::getName).toList();
-        if (!gameType.isHide()) {
+        if (Objects.equals(MjUserTypeEnum.WINNER, userType) && gameType.isWinnerType()) {
+            tags.add(gameType.getName());
+        } else if (Objects.equals(MjUserTypeEnum.LOSER, userType) && gameType.isLoserType()) {
             tags.add(gameType.getName());
         }
         return tags;
