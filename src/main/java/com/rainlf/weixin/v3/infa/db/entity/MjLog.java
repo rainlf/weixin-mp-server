@@ -41,19 +41,6 @@ public class MjLog {
     @Column(insertable = false, updatable = false)
     private LocalDateTime updateTime;
 
-
-    public boolean isWinner() {
-        return Objects.equals(MjUserTypeEnum.WINNER, userType);
-    }
-
-    public boolean isLoser() {
-        return Objects.equals(MjUserTypeEnum.LOSER, userType);
-    }
-
-    public boolean isRecorder() {
-        return Objects.equals(MjUserTypeEnum.RECORDER, userType);
-    }
-
     public List<String> getTags() {
         List<String> tags = pointOperators.stream().map(MjPointOperatorEnum::getName).toList();
         if (!gameType.isHide()) {

@@ -1,8 +1,9 @@
 package com.rainlf.weixin.v3.domain.mahjong;
 
-import com.rainlf.weixin.v3.app.dto.MjLogDTO;
 import com.rainlf.weixin.v3.app.dto.MjPlayerDTO;
 import com.rainlf.weixin.v3.app.dto.MjRankDTO;
+import com.rainlf.weixin.v3.domain.mahjong.model.MjGameLog;
+import com.rainlf.weixin.v3.domain.mahjong.model.MjPlayer;
 
 import java.util.List;
 
@@ -11,13 +12,11 @@ import java.util.List;
  * @date 7/20/2024 6:18 AM
  */
 public interface MjService {
-    List<MjLogDTO> getMjLogs();
+    List<MjGameLog> getMjLogs();
 
-    List<MjLogDTO> getUserMjLogs(Integer userId);
+    List<MjGameLog> getUserMjLogs(Integer userId);
 
-    MjRankDTO getMjRanks();
+    List<MjPlayer> getMjPlayers();
 
-    List<MjPlayerDTO> getMjPlayers();
-
-    List<MjPlayerDTO> getLatestMjPlayers();
+    List<MjPlayer> getLatestMjPlayers();
 }
