@@ -1,5 +1,8 @@
 package com.rainlf.weixin.v3.app.dto;
 
+import com.rainlf.weixin.v3.domain.mahjong.model.MjUserLog;
+import com.rainlf.weixin.v3.infa.db.entity.MjLog;
+import com.rainlf.weixin.v3.infa.db.entity.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -27,18 +30,11 @@ public class MjLogDTO {
         private Integer userScore;
         private List<String> userTags;
 
-        public Player(Integer userId, String userNickname, Integer userScore) {
-            this.userId = userId;
-            this.userNickname = userNickname;
-            this.userScore = userScore;
-            this.userTags = new ArrayList<>();
-        }
-
-        public Player(Integer userId, String userNickname, Integer userScore, List<String> userTags) {
-            this.userId = userId;
-            this.userNickname = userNickname;
-            this.userScore = userScore;
-            this.userTags = userTags;
+        public Player(MjUserLog mjUserLog) {
+            this.userId = mjUserLog.getUser().getId();
+            this.userNickname = mjUserLog.getUser().getNickname();
+            this.userScore = mjUserLog.getMjLog().getScore();
+            this.userTags = mjUserLog.getMjLog().getTags();
         }
     }
 

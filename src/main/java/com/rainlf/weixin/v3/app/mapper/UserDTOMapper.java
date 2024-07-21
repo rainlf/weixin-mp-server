@@ -1,4 +1,4 @@
-package com.rainlf.weixin.v3.app.dto.mapper;
+package com.rainlf.weixin.v3.app.mapper;
 
 import com.rainlf.weixin.v3.app.dto.UserDTO;
 import com.rainlf.weixin.v3.infa.db.entity.User;

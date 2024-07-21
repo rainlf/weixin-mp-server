@@ -4,8 +4,10 @@ import com.rainlf.weixin.v3.app.dto.MjLogDTO;
 import com.rainlf.weixin.v3.app.dto.MjPlayerDTO;
 import com.rainlf.weixin.v3.app.dto.MjRankDTO;
 import com.rainlf.weixin.v3.app.dto.base.ApiResp;
+import com.rainlf.weixin.v3.app.mapper.MjDTOMapper;
 import com.rainlf.weixin.v3.domain.mahjong.MjService;
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjPointOperatorEnum;
+import com.rainlf.weixin.v3.domain.mahjong.model.MjGameLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,20 +27,24 @@ import java.util.List;
 public class MjController {
     @Autowired
     private MjService mjService;
+    @Autowired
+    private MjDTOMapper mjDTOMapper;
 
     @GetMapping("/logs")
     public ApiResp<List<MjLogDTO>> getMjLogs() {
-        return ApiResp.success(mjService.getMjLogs());
-    }
-
-    @GetMapping("/ranks")
-    public ApiResp<MjRankDTO> getMjRanks() {
-        return ApiResp.success(mjService.getMjRanks());
+        List<MjGameLog> mjGameLogs = mjService.getMjLogs();
+        return ApiResp.success(mjDTOMapper.fromMjGameLogs(mjGameLogs));
     }
 
     @GetMapping("/user/{userId}/logs")
     public ApiResp<List<MjLogDTO>> getUserMjLogs(@PathVariable("userId") Integer userId) {
-        return ApiResp.success(mjService.getUserMjLogs(userId));
+        List<MjGameLog> mjGameLogs = mjService.getUserMjLogs(userId);
+        return ApiResp.success(mjDTOMapper.fromMjGameLogs(mjGameLogs));
+    }
+
+    @GetMapping("/ranks")
+    public ApiResp<MjRankDTO> getMjRanks() {
+        return ApiResp.success(mjService.getMjPlayers());
     }
 
     @GetMapping("/players")
