@@ -1,4 +1,4 @@
-package com.rainlf.weixin.v3.app.mapper;
+package com.rainlf.weixin.v3.app.assembler;
 
 import com.rainlf.weixin.v3.app.dto.MjGameLogDTO;
 import com.rainlf.weixin.v3.app.dto.MjPlayerDTO;
@@ -6,8 +6,7 @@ import com.rainlf.weixin.v3.app.dto.MjRankDTO;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjGameLog;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjPlayer;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjUserLog;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,10 +18,10 @@ import java.util.Optional;
  * @author rain
  * @date 7/21/2024 3:16 PM
  */
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface MjDTOMapper {
+@Component
+public class MjDTOAssembler {
 
-    default List<MjGameLogDTO> fromMjGameLogs(List<MjGameLog> mjGameLogs) {
+    public List<MjGameLogDTO> fromMjGameLogs(List<MjGameLog> mjGameLogs) {
         List<MjGameLogDTO> mjGameLogDTOS = new ArrayList<>();
 
         for (MjGameLog mjGameLog : mjGameLogs) {
@@ -60,11 +59,11 @@ public interface MjDTOMapper {
         return mjGameLogDTOS;
     }
 
-    default List<MjPlayerDTO> fromMjPlayers(List<MjPlayer> mjPlayers) {
+    public List<MjPlayerDTO> fromMjPlayers(List<MjPlayer> mjPlayers) {
         return mjPlayers.stream().map(MjPlayerDTO::new).toList();
     }
 
-    default MjRankDTO getMjRankDTOFromMjPlayers(List<MjPlayer> mjPlayers) {
+    public MjRankDTO getMjRankDTOFromMjPlayers(List<MjPlayer> mjPlayers) {
         List<MjPlayer> zeroMjPlayers = mjPlayers.stream().filter(mjPlayer -> mjPlayer.getUser().getCoin() == 0).toList();
         List<MjPlayer> noneZeroMjPlayers = mjPlayers.stream().filter(mjPlayer -> mjPlayer.getUser().getCoin() != 0).toList();
 

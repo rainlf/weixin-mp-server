@@ -3,7 +3,7 @@ package com.rainlf.weixin.v3.app.controller;
 import com.alibaba.fastjson2.JSON;
 import com.rainlf.weixin.v3.app.dto.*;
 import com.rainlf.weixin.v3.app.dto.ApiResp;
-import com.rainlf.weixin.v3.app.mapper.MjDTOMapper;
+import com.rainlf.weixin.v3.app.assembler.MjDTOAssembler;
 import com.rainlf.weixin.v3.domain.mahjong.MjService;
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjPointOperatorEnum;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjGameLog;
@@ -26,36 +26,36 @@ public class MjController {
     @Autowired
     private MjService mjService;
     @Autowired
-    private MjDTOMapper mjDTOMapper;
+    private MjDTOAssembler mjDTOAssembler;
 
     @GetMapping("/logs")
     public ApiResp<List<MjGameLogDTO>> getMjLogs() {
         List<MjGameLog> mjGameLogs = mjService.getMjLogs();
-        return ApiResp.success(mjDTOMapper.fromMjGameLogs(mjGameLogs));
+        return ApiResp.success(mjDTOAssembler.fromMjGameLogs(mjGameLogs));
     }
 
     @GetMapping("/user/{userId}/logs")
     public ApiResp<List<MjGameLogDTO>> getUserMjLogs(@PathVariable("userId") Integer userId) {
         List<MjGameLog> mjGameLogs = mjService.getUserMjLogs(userId);
-        return ApiResp.success(mjDTOMapper.fromMjGameLogs(mjGameLogs));
+        return ApiResp.success(mjDTOAssembler.fromMjGameLogs(mjGameLogs));
     }
 
     @GetMapping("/ranks")
     public ApiResp<MjRankDTO> getMjRanks() {
         List<MjPlayer> mjPlayers = mjService.getMjPlayers();
-        return ApiResp.success(mjDTOMapper.getMjRankDTOFromMjPlayers(mjPlayers));
+        return ApiResp.success(mjDTOAssembler.getMjRankDTOFromMjPlayers(mjPlayers));
     }
 
     @GetMapping("/players")
     public ApiResp<List<MjPlayerDTO>> getMjPlayers() {
         List<MjPlayer> mjPlayers = mjService.getMjPlayers();
-        return ApiResp.success(mjDTOMapper.fromMjPlayers(mjPlayers));
+        return ApiResp.success(mjDTOAssembler.fromMjPlayers(mjPlayers));
     }
 
     @GetMapping("/players/latest")
     public ApiResp<List<MjPlayerDTO>> getLatestMjPlayers() {
         List<MjPlayer> mjPlayers = mjService.getLatestMjPlayers();
-        return ApiResp.success(mjDTOMapper.fromMjPlayers(mjPlayers));
+        return ApiResp.success(mjDTOAssembler.fromMjPlayers(mjPlayers));
     }
 
     @GetMapping("/point/operators")

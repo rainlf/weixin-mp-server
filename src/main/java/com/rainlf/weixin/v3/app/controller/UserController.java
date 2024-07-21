@@ -2,7 +2,7 @@ package com.rainlf.weixin.v3.app.controller;
 
 import com.rainlf.weixin.v3.app.dto.UserDTO;
 import com.rainlf.weixin.v3.app.dto.ApiResp;
-import com.rainlf.weixin.v3.app.mapper.UserDTOMapper;
+import com.rainlf.weixin.v3.app.assembler.UserDTOAssembler;
 import com.rainlf.weixin.v3.domain.user.UserService;
 import com.rainlf.weixin.v3.infa.auth.AuthService;
 import com.rainlf.weixin.v3.infa.db.entity.User;
@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserDTOMapper userDTOMapper;
+    private UserDTOAssembler userDTOAssembler;
 
     @PostMapping("/login")
     public ApiResp<String> login(@RequestParam("code") String code) {
@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping("/info")
     public ApiResp<UserDTO> getCurrentUser() {
         User user = authService.getUser();
-        UserDTO userDTO = userDTOMapper.fromUserDO(user);
+        UserDTO userDTO = userDTOAssembler.fromUserDO(user);
         return ApiResp.success(userDTO);
     }
 
