@@ -25,6 +25,7 @@ public class OnlineGameDTO {
                 && !items.isEmpty()
                 && items.stream().allMatch(item -> item.getUserId() != null)
                 && items.stream().allMatch(item -> item.getScore() != null)
+                && items.stream().allMatch(item -> item.getScore() != 0)
                 && items.stream().map(Item::getUserId).distinct().count() == items.size()
                 && items.stream().mapToInt(Item::getScore).sum() == 0;
     }
