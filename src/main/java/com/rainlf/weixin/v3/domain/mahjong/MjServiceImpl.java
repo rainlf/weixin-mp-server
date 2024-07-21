@@ -1,6 +1,8 @@
 package com.rainlf.weixin.v3.domain.mahjong;
 
 import com.rainlf.weixin.v3.app.dto.OnlineGameDTO;
+import com.rainlf.weixin.v3.domain.mahjong.consts.MjGameTypeEnum;
+import com.rainlf.weixin.v3.domain.mahjong.consts.MjUserTypeEnum;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjGameLog;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjPlayer;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjUserLog;
@@ -8,6 +10,7 @@ import com.rainlf.weixin.v3.domain.user.UserService;
 import com.rainlf.weixin.v3.infa.db.entity.MjLog;
 import com.rainlf.weixin.v3.infa.db.entity.User;
 import com.rainlf.weixin.v3.infa.db.repository.MjLogRepository;
+import com.rainlf.weixin.v3.infa.util.MgttUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,20 +80,25 @@ public class MjServiceImpl implements MjService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveOnlieGame(OnlineGameDTO onlineGameDTO) {
-        String gameId = "xxxxxxxxxxxxxxxxx";
+        String gameId = MgttUtils.getMjUUID();
 
         for (OnlineGameDTO.Item item : onlineGameDTO.getItems()) {
-            User user =  userService.findById(item.getUserId());
-            user.setCoin(user.getCoin() + item.getScore());
+            User user = userService.findById(item.getUserId());
+            user.addScore(item.getScore());
             userService.save(user);
 
+            MjUserTypeEnum userTypeEnum = item.getScore() > 0 ? MjUserTypeEnum.WINNER : MjUserTypeEnum.LOSER;
             MjLog mjLog = new MjLog();
             mjLog.setGameId(gameId);
-            mjLog.setUserId(user.getId());
+            mjLog.setUserId(item.getUserId());
+            mjLog.setUserType(userTypeEnum);
+            mjLog.setGameType(MjGameTypeEnum.ONLINE_MJ);
             mjLog.setScore(item.getScore());
-
+            mjLogRepository.save(mjLog);
         }
 
-
+        User user = userService.findById(onlineGameDTO.getRecordrId());
+        user.addScore(MgttUtils.getRandAward());
+        userService.save(user);
     }
 }

@@ -1,10 +1,7 @@
 package com.rainlf.weixin.v3.app.controller;
 
 import com.alibaba.fastjson2.JSON;
-import com.rainlf.weixin.v3.app.dto.MjGameLogDTO;
-import com.rainlf.weixin.v3.app.dto.MjPlayerDTO;
-import com.rainlf.weixin.v3.app.dto.MjRankDTO;
-import com.rainlf.weixin.v3.app.dto.OnlineGameDTO;
+import com.rainlf.weixin.v3.app.dto.*;
 import com.rainlf.weixin.v3.app.dto.base.ApiResp;
 import com.rainlf.weixin.v3.app.mapper.MjDTOMapper;
 import com.rainlf.weixin.v3.domain.mahjong.MjService;
@@ -71,6 +68,14 @@ public class MjController {
         log.info("saveOnlieGame onlineGameDTO:{}", JSON.toJSONString(onlineGameDTO));
         Assert.isTrue(onlineGameDTO.isValid(), "onlineGameDTO is invalid");
         mjService.saveOnlieGame(onlineGameDTO);
+        return ApiResp.success();
+    }
+
+    @PostMapping("/desk/game")
+    public ApiResp<Void> saveDeskGame(@RequestBody DeskGameDTO deskGameDTO) {
+        log.info("saveDeskGame deskGameDTO:{}", JSON.toJSONString(deskGameDTO));
+        Assert.isTrue(deskGameDTO.isValid(), "deskGameDTO is invalid");
+        mjService.saveDeskGame(deskGameDTO);
         return ApiResp.success();
     }
 }
