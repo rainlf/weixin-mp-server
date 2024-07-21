@@ -2,7 +2,6 @@ package com.rainlf.weixin.v3.domain.mahjong;
 
 import com.rainlf.weixin.v3.app.dto.MjLogDTO;
 import com.rainlf.weixin.v3.app.dto.MjRankDTO;
-import com.rainlf.weixin.v3.domain.mahjong.consts.MjPointOperatorEnum;
 import com.rainlf.weixin.v3.domain.user.UserService;
 import com.rainlf.weixin.v3.infa.db.entity.MjLog;
 import com.rainlf.weixin.v3.infa.db.entity.User;
@@ -12,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -64,11 +60,7 @@ public class MjServiceImpl implements MjService {
             List<MjLogDTO.Player> winners = new ArrayList<>();
             for (MjLog winerLog : winerLogs) {
                 User winer = userService.findById(winerLog.getUserId());
-                List<String> tags = winerLog.getPointOperators().stream().map(MjPointOperatorEnum::getName).toList();
-                if (!winerLog.getGameType().isHide()) {
-                    tags.add(winerLog.getGameType().getName());
-                }
-                winners.add(new MjLogDTO.Player(winer.getId(), winer.getNickname(), winerLog.getScore(), tags));
+                winners.add(new MjLogDTO.Player(winer.getId(), winer.getNickname(), winerLog.getScore(), winerLog.getTags()));
             }
             mjLogDTO.setWinners(winners);
 
@@ -76,23 +68,60 @@ public class MjServiceImpl implements MjService {
             List<MjLogDTO.Player> losers = new ArrayList<>();
             for (MjLog loserLog : loserLogs) {
                 User loser = userService.findById(loserLog.getUserId());
-                List<String> tags = new ArrayList<>();
-                if (!loserLog.getGameType().isHide()) {
-                    tags.add(loserLog.getGameType().getName());
-                }
-                losers.add(new MjLogDTO.Player(loser.getId(), loser.getNickname(), loserLog.getScore(), tags));
+                losers.add(new MjLogDTO.Player(loser.getId(), loser.getNickname(), loserLog.getScore(), loserLog.getTags()));
             }
             mjLogDTO.setLosers(losers);
             mjLogDTOs.add(mjLogDTO);
         }
 
         // order by createTime desc
-        mjLogDTOs.sort((o1, o2) -> o2.getCreateTime().compareTo(o1.getCreateTime()));
+        mjLogDTOs.sort(Comparator.nullsLast(Comparator.comparing(MjLogDTO::getCreateTime).reversed()));
         return mjLogDTOs;
     }
 
     @Override
     public MjRankDTO getMjRanks() {
-        return null;
+        List<User> users = userService.findAll();
+
+        // crete rank item wiht user tags
+        List<MjRankDTO.RankItem> rankItems = new ArrayList<>();
+        for (User user : users) {
+            LocalDateTime lastGameTime = null;
+            List<String> tags = new ArrayList<>();
+            List<MjLog> mjLogs = mjLogRepository.findLast10LogWithTags(user.getId());
+            if (!mjLogs.isEmpty()) {
+                lastGameTime = mjLogs.get(0).getCreateTime();
+                tags = mjLogs.stream().map(MjLog::getTags).flatMap(List::stream).toList();
+            }
+            MjRankDTO.RankItem item = new MjRankDTO.RankItem(user.getId(), user.getNickname(), user.getCoin(), tags, lastGameTime);
+            rankItems.add(item);
+        }
+
+        List<MjRankDTO.RankItem> zeroImtes = rankItems.stream().filter(item -> item.getUserCoin() == 0).toList();
+        List<MjRankDTO.RankItem> nonZeroItems = rankItems.stream().filter(item -> item.getUserCoin() != 0).toList();
+        zeroImtes.sort(Comparator.nullsLast(Comparator.comparing(MjRankDTO.RankItem::getLastGameTime).reversed()));
+        nonZeroItems.sort(Comparator.nullsLast(Comparator.comparing(MjRankDTO.RankItem::getUserCoin).reversed()));
+
+        List<MjRankDTO.RankItem> sortedItems = new ArrayList<>();
+        sortedItems.addAll(nonZeroItems);
+        sortedItems.addAll(zeroImtes);
+
+        return getMjRankDTO(sortedItems);
+    }
+
+    private static MjRankDTO getMjRankDTO(List<MjRankDTO.RankItem> sortedItems) {
+        MjRankDTO mjRankDTO = new MjRankDTO();
+        if (!sortedItems.isEmpty()) {
+            MjRankDTO.RankItem topItem = sortedItems.get(0);
+            MjRankDTO.RankItem bottomItem = sortedItems.get(sortedItems.size() - 1);
+            mjRankDTO.setTopUserId(topItem.getUserId());
+            mjRankDTO.setTopUserNickname(topItem.getUserNickname());
+            mjRankDTO.setTopUserCoin(topItem.getUserCoin());
+            mjRankDTO.setBottomUserId(bottomItem.getUserId());
+            mjRankDTO.setBottomUserNickname(bottomItem.getUserNickname());
+            mjRankDTO.setBottomUserCoin(bottomItem.getUserCoin());
+        }
+        mjRankDTO.setRankItems(sortedItems);
+        return mjRankDTO;
     }
 }

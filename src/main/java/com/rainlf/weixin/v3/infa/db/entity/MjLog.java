@@ -1,8 +1,8 @@
 package com.rainlf.weixin.v3.infa.db.entity;
 
+import com.rainlf.weixin.v3.domain.mahjong.consts.MjGameTypeEnum;
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjPointOperatorEnum;
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjUserTypeEnum;
-import com.rainlf.weixin.v3.domain.mahjong.consts.MjGameTypeEnum;
 import com.rainlf.weixin.v3.infa.db.converter.MjPointOperatorEnumsConverter;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -54,5 +54,11 @@ public class MjLog {
         return Objects.equals(MjUserTypeEnum.RECORDER, userType);
     }
 
-
+    public List<String> getTags() {
+        List<String> tags = pointOperators.stream().map(MjPointOperatorEnum::getName).toList();
+        if (!gameType.isHide()) {
+            tags.add(gameType.getName());
+        }
+        return tags;
+    }
 }
