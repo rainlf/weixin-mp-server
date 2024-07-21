@@ -1,5 +1,6 @@
 package com.rainlf.weixin.v3.domain.mahjong;
 
+import com.rainlf.weixin.v3.app.dto.OnlineGameDTO;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjGameLog;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjPlayer;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjUserLog;
@@ -10,6 +11,7 @@ import com.rainlf.weixin.v3.infa.db.repository.MjLogRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,5 +72,25 @@ public class MjServiceImpl implements MjService {
         Map<Integer, User> userMap = userService.findByIdIn(mjGameLog.stream().map(MjLog::getUserId).toList())
                 .stream().collect(Collectors.toMap(User::getId, user -> user));
         return mjGameLog.stream().map(mjLog -> new MjPlayer(userMap.get(mjLog.getUserId()), Collections.singletonList(mjLog))).toList();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void saveOnlieGame(OnlineGameDTO onlineGameDTO) {
+        String gameId = "xxxxxxxxxxxxxxxxx";
+
+        for (OnlineGameDTO.Item item : onlineGameDTO.getItems()) {
+            User user =  userService.findById(item.getUserId());
+            user.setCoin(user.getCoin() + item.getScore());
+            userService.save(user);
+
+            MjLog mjLog = new MjLog();
+            mjLog.setGameId(gameId);
+            mjLog.setUserId(user.getId());
+            mjLog.setScore(item.getScore());
+
+        }
+
+
     }
 }

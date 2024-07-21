@@ -2,7 +2,9 @@ package com.rainlf.weixin.v3.infa.db.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.SQLRestriction;
+import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
  * @date 7/19/2024 2:09 PM
  */
 @Data
+@Slf4j
 @Entity
 @Table(name = "weixin_user")
 @SQLRestriction("is_deleted = 0")
@@ -31,4 +34,10 @@ public class User {
     private LocalDateTime createTime;
     @Column(insertable = false, updatable = false)
     private LocalDateTime updateTime;
+
+    public void addScore(Integer score) {
+        Assert.notNull(score, "score must not be null");
+        log.info("{} add score: {}", nickname, score);
+        this.coin = this.coin + score;
+    }
 }

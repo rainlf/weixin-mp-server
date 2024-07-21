@@ -20,4 +20,6 @@ public interface UserService {
     List<User> findByIdIn(List<Integer> ids);
 
     List<User> findAll();
+
+    void save(User user);
 }

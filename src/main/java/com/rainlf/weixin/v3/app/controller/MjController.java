@@ -1,8 +1,10 @@
 package com.rainlf.weixin.v3.app.controller;
 
+import com.alibaba.fastjson2.JSON;
 import com.rainlf.weixin.v3.app.dto.MjGameLogDTO;
 import com.rainlf.weixin.v3.app.dto.MjPlayerDTO;
 import com.rainlf.weixin.v3.app.dto.MjRankDTO;
+import com.rainlf.weixin.v3.app.dto.OnlineGameDTO;
 import com.rainlf.weixin.v3.app.dto.base.ApiResp;
 import com.rainlf.weixin.v3.app.mapper.MjDTOMapper;
 import com.rainlf.weixin.v3.domain.mahjong.MjService;
@@ -11,10 +13,8 @@ import com.rainlf.weixin.v3.domain.mahjong.model.MjGameLog;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjPlayer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -64,5 +64,13 @@ public class MjController {
     @GetMapping("/point/operators")
     public ApiResp<List<MjPointOperatorEnum>> getMjPointOperators() {
         return ApiResp.success(List.of(MjPointOperatorEnum.values()));
+    }
+
+    @PostMapping("/onlie/game")
+    public ApiResp<Void> saveOnlieGame(@RequestBody OnlineGameDTO onlineGameDTO) {
+        log.info("saveOnlieGame onlineGameDTO:{}", JSON.toJSONString(onlineGameDTO));
+        Assert.isTrue(onlineGameDTO.isValid(), "onlineGameDTO is invalid");
+        mjService.saveOnlieGame(onlineGameDTO);
+        return ApiResp.success();
     }
 }
