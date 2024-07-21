@@ -12,15 +12,19 @@ import java.time.LocalDateTime;
  */
 @Data
 @Entity
-@Table(name = "weixin_app_config")
+@Table(name = "weixin_user")
 @SQLRestriction("is_deleted = 0")
-public class AppConfigDO {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(unique = true)
-    private String key;
-    private String value;
+    private String openId;
+    private String nickname;
+    private byte[] avatar;
+    private Integer coin;
+    private String comment;
+    @Column(name = "is_admin")
+    private boolean admin;
     @Column(name = "is_deleted", insertable = false)
     private boolean deleted;
     @Column(insertable = false, updatable = false)

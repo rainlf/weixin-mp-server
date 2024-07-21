@@ -1,7 +1,10 @@
 package com.rainlf.weixin.v3.domain.mahjong;
 
+import com.rainlf.weixin.v3.app.dto.MjLogDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author rain
@@ -10,4 +13,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class MjServiceImpl implements MjService {
+    @Override
+    public List<MjLogDTO> getMjLogs() {
+        return List.of();
+    }
 }

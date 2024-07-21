@@ -1,7 +1,7 @@
 package com.rainlf.weixin.v3.infa.auth;
 
-import com.rainlf.weixin.v3.infa.db.entity.UserDO;
-import com.rainlf.weixin.v3.infa.db.repository.UserDORepository;
+import com.rainlf.weixin.v3.infa.db.entity.User;
+import com.rainlf.weixin.v3.infa.db.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ import java.util.Optional;
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
-    private UserDORepository userDORepository;
+    private UserRepository userRepository;
 
     // 线程登录态，线程隔离
-    private final ThreadLocal<UserDO> userDOThreadLocal = new ThreadLocal<>();
+    private final ThreadLocal<User> userDOThreadLocal = new ThreadLocal<>();
 
     @Override
     public void authToken(String token) {
@@ -30,14 +30,14 @@ public class AuthServiceImpl implements AuthService {
         String openId = claims.getSubject();
         Assert.notNull(openId, "invalid jwt token, openId is null");
 
-        Optional<UserDO> userDO = userDORepository.findByOpenId(openId);
-        Assert.isTrue(userDO.isPresent(), "invalid jwt token, user not found, openId: " + openId);
-        userDOThreadLocal.set(userDO.get());
+        Optional<User> userOptional = userRepository.findByOpenId(openId);
+        Assert.isTrue(userOptional.isPresent(), "invalid jwt token, user not found, openId: " + openId);
+        userDOThreadLocal.set(userOptional.get());
     }
 
     @Override
-    public UserDO getUser() {
-        UserDO user = userDOThreadLocal.get();
+    public User getUser() {
+        User user = userDOThreadLocal.get();
         Assert.notNull(user, "user not login");
         return user;
     }

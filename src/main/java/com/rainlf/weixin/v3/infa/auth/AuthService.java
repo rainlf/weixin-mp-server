@@ -1,6 +1,6 @@
 package com.rainlf.weixin.v3.infa.auth;
 
-import com.rainlf.weixin.v3.infa.db.entity.UserDO;
+import com.rainlf.weixin.v3.infa.db.entity.User;
 
 /**
  * @author rain
@@ -10,7 +10,7 @@ public interface AuthService {
 
     void authToken(String token);
 
-    UserDO getUser();
+    User getUser();
 
     void cleanUser();
 

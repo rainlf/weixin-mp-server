@@ -1,6 +1,6 @@
 package com.rainlf.weixin.v3.infa.db.repository;
 
-import com.rainlf.weixin.v3.infa.db.entity.MjLogDO;
+import com.rainlf.weixin.v3.infa.db.entity.MjLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * @date 7/19/2024 2:30 PM
  */
 @Repository
-public interface MjLogDORepository extends JpaRepository<MjLogDO, Integer> {
+public interface MjLogRepository extends JpaRepository<MjLog, Integer> {
 }

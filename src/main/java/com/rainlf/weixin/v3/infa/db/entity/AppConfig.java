@@ -8,24 +8,19 @@ import java.time.LocalDateTime;
 
 /**
  * @author rain
- * @date 7/19/2024 2:12 PM
+ * @date 7/19/2024 2:09 PM
  */
 @Data
 @Entity
-@Table(name = "weixin_mj_log")
+@Table(name = "weixin_app_config")
 @SQLRestriction("is_deleted = 0")
-public class MjLogDO {
+public class AppConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String gameId;
-    private Integer userId;
-    private Integer userType;
-    private Integer winType;
-    private Integer point;
-    private String pointOperators;
-    private Integer totalPoint;
-    private Integer score;
+    @Column(unique = true)
+    private String key;
+    private String value;
     @Column(name = "is_deleted", insertable = false)
     private boolean deleted;
     @Column(insertable = false, updatable = false)

@@ -6,6 +6,6 @@ package com.rainlf.weixin.v3.infa.wexin;
  */
 public interface WeixinService {
 
-    WeixinSession code2Session(String code);
+    WeixinSession code2Session(String appId, String appSecret, String code);
 
 }

@@ -1,7 +1,7 @@
 package com.rainlf.weixin.v3.app.dto.mapper;
 
 import com.rainlf.weixin.v3.app.dto.UserDTO;
-import com.rainlf.weixin.v3.infa.db.entity.UserDO;
+import com.rainlf.weixin.v3.infa.db.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
@@ -12,5 +12,5 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserDTOMapper {
 
-    UserDTO fromUserDO(UserDO userDO);
+    UserDTO fromUserDO(User user);
 }

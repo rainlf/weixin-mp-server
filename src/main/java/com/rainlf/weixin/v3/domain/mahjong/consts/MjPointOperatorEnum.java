@@ -1,4 +1,4 @@
-package com.rainlf.weixin.v3.domain.mahjong;
+package com.rainlf.weixin.v3.domain.mahjong.consts;
 
 import lombok.Getter;
 

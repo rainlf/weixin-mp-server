@@ -1,4 +1,4 @@
-package com.rainlf.weixin.v1.app.controller;
+package com.rainlf.weixin.v3.app.controller.advice;
 
 import com.rainlf.weixin.v3.app.dto.base.ApiResp;
 import jakarta.servlet.http.HttpServletResponse;
