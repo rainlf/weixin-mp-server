@@ -1,12 +1,9 @@
 package com.rainlf.weixin.v3.app.dto;
 
 import com.rainlf.weixin.v3.domain.mahjong.model.MjUserLog;
-import com.rainlf.weixin.v3.infa.db.entity.MjLog;
-import com.rainlf.weixin.v3.infa.db.entity.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +11,7 @@ import java.util.List;
  * @date 7/20/2024 8:54 AM
  */
 @Data
-public class MjLogDTO {
+public class MjGameLogDTO {
     private String gameId;
     private String gameType;
     private boolean canDelete;

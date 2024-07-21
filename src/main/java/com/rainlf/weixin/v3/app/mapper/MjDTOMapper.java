@@ -1,13 +1,17 @@
 package com.rainlf.weixin.v3.app.mapper;
 
-import com.rainlf.weixin.v3.app.dto.MjLogDTO;
+import com.rainlf.weixin.v3.app.dto.MjGameLogDTO;
+import com.rainlf.weixin.v3.app.dto.MjPlayerDTO;
+import com.rainlf.weixin.v3.app.dto.MjRankDTO;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjGameLog;
+import com.rainlf.weixin.v3.domain.mahjong.model.MjPlayer;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjUserLog;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,11 +22,11 @@ import java.util.Optional;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface MjDTOMapper {
 
-    default List<MjLogDTO> fromMjGameLogs(List<MjGameLog> mjGameLogs) {
-        List<MjLogDTO> mjLogDTOs = new ArrayList<>();
+    default List<MjGameLogDTO> fromMjGameLogs(List<MjGameLog> mjGameLogs) {
+        List<MjGameLogDTO> mjGameLogDTOS = new ArrayList<>();
 
         for (MjGameLog mjGameLog : mjGameLogs) {
-            MjLogDTO mjLogDTO = new MjLogDTO();
+            MjGameLogDTO mjGameLogDTO = new MjGameLogDTO();
 
             String gameId = mjGameLog.getGameId();
             List<MjUserLog> mjUserLogs = mjGameLog.getMjLogs();
@@ -38,21 +42,63 @@ public interface MjDTOMapper {
             MjUserLog recorderLog = recorderLogOptional.get();
             LocalDateTime createTime = recorderLog.getMjLog().getCreateTime();
             boolean canDelete = LocalDateTime.now().isBefore(createTime.plusHours(1L)); // 1h 内可删除
-            mjLogDTO.setGameId(gameId);
-            mjLogDTO.setCanDelete(canDelete);
-            mjLogDTO.setCreateTime(createTime);
-            mjLogDTO.setRecordUser(new MjLogDTO.Player(recorderLog));
+            mjGameLogDTO.setGameId(gameId);
+            mjGameLogDTO.setCanDelete(canDelete);
+            mjGameLogDTO.setCreateTime(createTime);
+            mjGameLogDTO.setRecordUser(new MjGameLogDTO.Player(recorderLog));
 
             // winners
-            List<MjLogDTO.Player> winners = winerLogs.stream().map(MjLogDTO.Player::new).toList();
-            mjLogDTO.setWinners(winners);
+            List<MjGameLogDTO.Player> winners = winerLogs.stream().map(MjGameLogDTO.Player::new).toList();
+            mjGameLogDTO.setWinners(winners);
 
             // losers
-            List<MjLogDTO.Player> loser = winerLogs.stream().map(MjLogDTO.Player::new).toList();
-            mjLogDTO.setLosers(loser);
+            List<MjGameLogDTO.Player> loser = winerLogs.stream().map(MjGameLogDTO.Player::new).toList();
+            mjGameLogDTO.setLosers(loser);
 
-            mjLogDTOs.add(mjLogDTO);
+            mjGameLogDTOS.add(mjGameLogDTO);
         }
-        return mjLogDTOs;
+        return mjGameLogDTOS;
+    }
+
+    default List<MjPlayerDTO> fromMjPlayers(List<MjPlayer> mjPlayers) {
+        return mjPlayers.stream().map(MjPlayerDTO::new).toList();
+    }
+
+    default MjRankDTO getMjRankDTOFromMjPlayers(List<MjPlayer> mjPlayers) {
+        List<MjPlayer> zeroMjPlayers = mjPlayers.stream().filter(mjPlayer -> mjPlayer.getUser().getCoin() == 0).toList();
+        List<MjPlayer> noneZeroMjPlayers = mjPlayers.stream().filter(mjPlayer -> mjPlayer.getUser().getCoin() != 0).toList();
+
+        // sort by coin desc, last game time desc
+        zeroMjPlayers.sort(Comparator.comparing((MjPlayer x) -> x.getUser().getCoin()).reversed());
+        noneZeroMjPlayers.sort(Comparator.comparing(MjPlayer::getLastGameTime).reversed());
+
+        List<MjPlayer> mjPlayersSorted = new ArrayList<>();
+        mjPlayersSorted.addAll(zeroMjPlayers);
+        mjPlayersSorted.addAll(noneZeroMjPlayers);
+
+        MjRankDTO mjRankDTO = new MjRankDTO();
+        if (!mjPlayersSorted.isEmpty()) {
+            MjPlayer topMjPlayer = mjPlayersSorted.get(0);
+            MjPlayer bottomMjPlayer = mjPlayersSorted.get(mjPlayersSorted.size() - 1);
+
+            mjRankDTO.setTopUserId(topMjPlayer.getUser().getId());
+            mjRankDTO.setTopUserNickname(topMjPlayer.getUser().getNickname());
+            mjRankDTO.setTopUserCoin(topMjPlayer.getUser().getCoin());
+
+            mjRankDTO.setBottomUserId(bottomMjPlayer.getUser().getId());
+            mjRankDTO.setBottomUserNickname(bottomMjPlayer.getUser().getNickname());
+            mjRankDTO.setBottomUserCoin(bottomMjPlayer.getUser().getCoin());
+
+            List<MjRankDTO.RankItem> rankItems = mjPlayersSorted.stream().map(mjPlayer -> {
+                Integer userId = mjPlayer.getUser().getId();
+                String userNickname = mjPlayer.getUser().getNickname();
+                Integer userCoin = mjPlayer.getUser().getCoin();
+                List<String> userTags = mjPlayer.getMjLogs().stream().flatMap(mjLog -> mjLog.getTags().stream()).distinct().limit(10).toList();
+                LocalDateTime lastGameTime = mjPlayer.getLastGameTime();
+                return new MjRankDTO.RankItem(userId, userNickname, userCoin, userTags, lastGameTime);
+            }).toList();
+            mjRankDTO.setRankItems(rankItems);
+        }
+        return mjRankDTO;
     }
 }

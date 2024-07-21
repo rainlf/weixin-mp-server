@@ -1,5 +1,6 @@
 package com.rainlf.weixin.v3.app.dto;
 
+import com.rainlf.weixin.v3.domain.mahjong.model.MjPlayer;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,9 +15,9 @@ public class MjPlayerDTO {
     private String userNickname;
     private LocalDateTime lastGameTime;
 
-    public MjPlayerDTO(Integer userId, String userNickname, LocalDateTime lastGameTime) {
-        this.userId = userId;
-        this.userNickname = userNickname;
-        this.lastGameTime = lastGameTime;
+    public MjPlayerDTO(MjPlayer mjPlayer) {
+        this.userId = mjPlayer.getUser().getId();
+        this.userNickname = mjPlayer.getUser().getNickname();
+        this.lastGameTime = mjPlayer.getLastGameTime();
     }
 }
