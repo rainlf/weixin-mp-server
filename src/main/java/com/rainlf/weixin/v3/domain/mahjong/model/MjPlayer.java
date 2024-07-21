@@ -31,8 +31,4 @@ public class MjPlayer {
         Optional<MjLog> latestMjLogOptional = mjLogs.stream().max(Comparator.nullsLast(Comparator.comparing(MjLog::getCreateTime)));
         return latestMjLogOptional.map(MjLog::getCreateTime).orElse(null);
     }
-
-    List<String> getTags() {
-        return mjLogs.stream().map(MjLog::getTags).flatMap(List::stream).toList();
-    }
 }
