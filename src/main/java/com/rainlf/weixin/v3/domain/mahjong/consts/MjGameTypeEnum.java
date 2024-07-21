@@ -7,28 +7,34 @@ import lombok.Getter;
  * @date 7/20/2024 6:19 AM
  */
 @Getter
-public enum MjWinTypeEnum {
+public enum MjGameTypeEnum {
     PING_HU(1, "平胡"),
     ZI_MO(2, "自摸"),
-    ONLINE_MJ(3, "线上麻将"),
+    YI_PAO_SHUANG_XIANG(3, "一炮双响"),
+    YI_PAO_SAN_XIANG(4, "一炮三响"),
+    ONLINE_MJ(5, "线上麻将"),
     ;
 
     private final int code;
     private final String name;
 
-    MjWinTypeEnum(int code, String name) {
+    MjGameTypeEnum(int code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static MjWinTypeEnum fromCode(Integer code) {
+    public static MjGameTypeEnum fromCode(Integer code) {
         if (code != null) {
-            for (MjWinTypeEnum value : MjWinTypeEnum.values()) {
+            for (MjGameTypeEnum value : MjGameTypeEnum.values()) {
                 if (value.code == code) {
                     return value;
                 }
             }
         }
         return null;
+    }
+
+    public boolean isHide() {
+        return this == PING_HU || this == ONLINE_MJ;
     }
 }

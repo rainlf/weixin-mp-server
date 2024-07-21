@@ -3,6 +3,7 @@ package com.rainlf.weixin.v3.app.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,16 +14,33 @@ import java.util.List;
 public class MjLogDTO {
     private String gameId;
     private boolean canDelete;
-    private LocalDateTime createTime;
+    private String gameType;
     private List<Player> winners;
     private List<Player> losers;
     private Player recordUser;
+    private LocalDateTime createTime;
 
+    @Data
     public static class Player {
-        private String winType;
         private Integer userId;
         private String userNickname;
-        private Integer userCoin;
+        private Integer userScore;
         private List<String> userTags;
+
+        public Player(Integer userId, String userNickname, Integer userScore) {
+            this.userId = userId;
+            this.userNickname = userNickname;
+            this.userScore = userScore;
+            this.userTags = new ArrayList<>();
+        }
+
+        public Player(Integer userId, String userNickname, Integer userScore, List<String> userTags) {
+            this.userId = userId;
+            this.userNickname = userNickname;
+            this.userScore = userScore;
+            this.userTags = userTags;
+        }
     }
+
+
 }

@@ -8,8 +8,9 @@ import lombok.Getter;
  */
 @Getter
 public enum MjUserTypeEnum {
-    PLAYER(1),
-    RECODER(2),
+    WINNER(1),
+    LOSER(2),
+    RECORDER(3),
     ;
 
     private final int code;

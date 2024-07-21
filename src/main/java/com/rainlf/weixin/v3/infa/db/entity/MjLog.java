@@ -2,7 +2,7 @@ package com.rainlf.weixin.v3.infa.db.entity;
 
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjPointOperatorEnum;
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjUserTypeEnum;
-import com.rainlf.weixin.v3.domain.mahjong.consts.MjWinTypeEnum;
+import com.rainlf.weixin.v3.domain.mahjong.consts.MjGameTypeEnum;
 import com.rainlf.weixin.v3.infa.db.converter.MjPointOperatorEnumsConverter;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -10,6 +10,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author rain
@@ -26,7 +27,7 @@ public class MjLog {
     private String gameId;
     private Integer userId;
     private MjUserTypeEnum userType;
-    private MjWinTypeEnum winType;
+    private MjGameTypeEnum gameType;
     private Integer point;
     @ElementCollection
     @Convert(converter = MjPointOperatorEnumsConverter.class)
@@ -39,4 +40,19 @@ public class MjLog {
     private LocalDateTime createTime;
     @Column(insertable = false, updatable = false)
     private LocalDateTime updateTime;
+
+
+    public boolean isWinner() {
+        return Objects.equals(MjUserTypeEnum.WINNER, userType);
+    }
+
+    public boolean isLoser() {
+        return Objects.equals(MjUserTypeEnum.LOSER, userType);
+    }
+
+    public boolean isRecorder() {
+        return Objects.equals(MjUserTypeEnum.RECORDER, userType);
+    }
+
+
 }

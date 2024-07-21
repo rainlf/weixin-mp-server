@@ -1,4 +1,4 @@
-package com.rainlf.weixin.v3.domain.mahjong.user;
+package com.rainlf.weixin.v3.domain.user;
 
 import com.rainlf.weixin.v3.infa.db.entity.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,4 +12,6 @@ public interface UserService {
     String login(String code);
 
     void updateUser(User user, String nickname, MultipartFile file);
+
+    User findById(Integer id);
 }

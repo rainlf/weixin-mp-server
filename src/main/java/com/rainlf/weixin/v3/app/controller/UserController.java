@@ -3,7 +3,7 @@ package com.rainlf.weixin.v3.app.controller;
 import com.rainlf.weixin.v3.app.dto.UserDTO;
 import com.rainlf.weixin.v3.app.dto.base.ApiResp;
 import com.rainlf.weixin.v3.app.dto.mapper.UserDTOMapper;
-import com.rainlf.weixin.v3.domain.mahjong.user.UserService;
+import com.rainlf.weixin.v3.domain.user.UserService;
 import com.rainlf.weixin.v3.infa.auth.AuthService;
 import com.rainlf.weixin.v3.infa.db.entity.User;
 import lombok.extern.slf4j.Slf4j;

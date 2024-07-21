@@ -1,6 +1,5 @@
-package com.rainlf.weixin.v3.main.mahjong.user;
+package com.rainlf.weixin.v3.domain.user;
 
-import com.rainlf.weixin.v3.domain.mahjong.user.UserService;
 import com.rainlf.weixin.v3.infa.auth.JJwtUtils;
 import com.rainlf.weixin.v3.infa.db.entity.AppConfig;
 import com.rainlf.weixin.v3.infa.db.entity.User;
@@ -66,6 +65,11 @@ public class UserServiceImpl implements UserService {
         user.setNickname(nickname);
         user.setAvatar(bytes);
         userRepository.save(user);
+    }
+
+    @Override
+    public User findById(Integer id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("user not found, id: " + id));
     }
 
     private String getAppConfig(String key) {
