@@ -1,7 +1,7 @@
 package com.rainlf.weixin.v3.app.controller;
 
 import com.rainlf.weixin.v3.app.dto.UserDTO;
-import com.rainlf.weixin.v3.app.dto.base.ApiResp;
+import com.rainlf.weixin.v3.app.dto.ApiResp;
 import com.rainlf.weixin.v3.app.mapper.UserDTOMapper;
 import com.rainlf.weixin.v3.domain.user.UserService;
 import com.rainlf.weixin.v3.infa.auth.AuthService;

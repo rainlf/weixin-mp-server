@@ -15,6 +15,16 @@ public class MgttUtils {
     }
 
     public static Integer getRandAward() {
-        return random.nextInt(100) + 1;
+        int randomInte = random.nextInt(100) + 1;
+        if (randomInte <= 50) {
+            return 1;
+        } else if (randomInte <= 70) {
+            return 2;
+        } else if (randomInte <= 90) {
+            return 3;
+        } else if (randomInte <= 99) {
+            return 5;
+        }
+        return 100;
     }
 }

@@ -1,6 +1,6 @@
 package com.rainlf.weixin.v1.app.controller;
 
-import com.rainlf.weixin.v3.app.dto.base.ApiResp;
+import com.rainlf.weixin.v3.app.dto.ApiResp;
 import com.rainlf.weixin.v1.app.dto.SportInfoDto;
 import com.rainlf.weixin.v1.domain.service.GameService;
 import lombok.extern.slf4j.Slf4j;

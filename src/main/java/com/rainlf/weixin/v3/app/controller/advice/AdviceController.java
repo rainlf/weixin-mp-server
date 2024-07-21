@@ -1,6 +1,6 @@
 package com.rainlf.weixin.v3.app.controller.advice;
 
-import com.rainlf.weixin.v3.app.dto.base.ApiResp;
+import com.rainlf.weixin.v3.app.dto.ApiResp;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;

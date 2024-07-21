@@ -2,7 +2,7 @@ package com.rainlf.weixin.v3.app.controller;
 
 import com.alibaba.fastjson2.JSON;
 import com.rainlf.weixin.v3.app.dto.*;
-import com.rainlf.weixin.v3.app.dto.base.ApiResp;
+import com.rainlf.weixin.v3.app.dto.ApiResp;
 import com.rainlf.weixin.v3.app.mapper.MjDTOMapper;
 import com.rainlf.weixin.v3.domain.mahjong.MjService;
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjPointOperatorEnum;

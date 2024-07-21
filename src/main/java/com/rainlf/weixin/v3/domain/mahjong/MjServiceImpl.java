@@ -82,6 +82,7 @@ public class MjServiceImpl implements MjService {
     public void saveOnlieGame(OnlineGameDTO onlineGameDTO) {
         String gameId = MgttUtils.getMjUUID();
 
+        // winner and loser
         for (OnlineGameDTO.Item item : onlineGameDTO.getItems()) {
             User user = userService.findById(item.getUserId());
             user.addScore(item.getScore());
@@ -97,8 +98,18 @@ public class MjServiceImpl implements MjService {
             mjLogRepository.save(mjLog);
         }
 
+        // recorder
         User user = userService.findById(onlineGameDTO.getRecordrId());
         user.addScore(MgttUtils.getRandAward());
         userService.save(user);
+        MjLog mjLog = new MjLog();
+        mjLog.setGameId(gameId);
+        mjLog.setUserId(onlineGameDTO.getRecordrId());
+        mjLog.setUserType(MjUserTypeEnum.RECORDER);
+        mjLog.setGameType(MjGameTypeEnum.ONLINE_MJ);
+        mjLog.setScore(MgttUtils.getRandAward());
+        mjLogRepository.save(mjLog);
+
+
     }
 }
