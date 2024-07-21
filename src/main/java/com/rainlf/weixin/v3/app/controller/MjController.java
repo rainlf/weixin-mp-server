@@ -1,6 +1,7 @@
 package com.rainlf.weixin.v3.app.controller;
 
 import com.rainlf.weixin.v3.app.dto.MjLogDTO;
+import com.rainlf.weixin.v3.app.dto.MjRankDTO;
 import com.rainlf.weixin.v3.app.dto.base.ApiResp;
 import com.rainlf.weixin.v3.domain.mahjong.MjService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,11 @@ public class MjController {
 
     @GetMapping("/logs")
     public ApiResp<List<MjLogDTO>> getMjLogs() {
-        List<MjLogDTO> mjLogDTOS = mjService.getMjLogs();
-        return ApiResp.success(mjLogDTOS);
+        return ApiResp.success(mjService.getMjLogs());
+    }
+
+    @GetMapping("/ranks")
+    public ApiResp<MjRankDTO> getMjRanks() {
+        return ApiResp.success(mjService.getMjRanks());
     }
 }

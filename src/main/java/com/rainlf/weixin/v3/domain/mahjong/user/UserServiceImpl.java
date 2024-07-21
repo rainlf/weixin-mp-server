@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user, String nickname, MultipartFile file) {
-        byte[] bytes = null;
+        byte[] bytes;
         try {
             bytes = file.getBytes();
         } catch (IOException e) {

@@ -9,7 +9,7 @@ import java.util.List;
  * @date 7/20/2024 8:52 AM
  */
 @Data
-public class UserRankDTO {
+public class MjRankDTO {
     private Integer topUserId;
     private String topUserNickname;
     private Integer topUserCoin;

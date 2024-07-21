@@ -1,6 +1,7 @@
 package com.rainlf.weixin.v3.domain.mahjong;
 
 import com.rainlf.weixin.v3.app.dto.MjLogDTO;
+import com.rainlf.weixin.v3.app.dto.MjRankDTO;
 
 import java.util.List;
 
@@ -10,4 +11,6 @@ import java.util.List;
  */
 public interface MjService {
     List<MjLogDTO> getMjLogs();
+
+    MjRankDTO getMjRanks();
 }
