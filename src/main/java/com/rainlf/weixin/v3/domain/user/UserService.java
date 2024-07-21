@@ -17,5 +17,7 @@ public interface UserService {
 
     User findById(Integer id);
 
+    List<User> findByIdIn(List<Integer> ids);
+
     List<User> findAll();
 }

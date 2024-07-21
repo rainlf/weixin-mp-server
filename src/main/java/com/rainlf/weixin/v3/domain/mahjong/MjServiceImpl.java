@@ -1,6 +1,7 @@
 package com.rainlf.weixin.v3.domain.mahjong;
 
 import com.rainlf.weixin.v3.app.dto.MjLogDTO;
+import com.rainlf.weixin.v3.app.dto.MjPlayerDTO;
 import com.rainlf.weixin.v3.app.dto.MjRankDTO;
 import com.rainlf.weixin.v3.domain.user.UserService;
 import com.rainlf.weixin.v3.infa.db.entity.MjLog;
@@ -47,7 +48,7 @@ public class MjServiceImpl implements MjService {
         for (User user : users) {
             LocalDateTime lastGameTime = null;
             List<String> tags = new ArrayList<>();
-            List<MjLog> mjLogs = mjLogRepository.findLast10LogWithTags(user.getId());
+            List<MjLog> mjLogs = mjLogRepository.findLatest10LogWithTags(user.getId());
             if (!mjLogs.isEmpty()) {
                 lastGameTime = mjLogs.get(0).getCreateTime();
                 tags = mjLogs.stream().map(MjLog::getTags).flatMap(List::stream).toList();
@@ -66,6 +67,34 @@ public class MjServiceImpl implements MjService {
         sortedItems.addAll(zeroImtes);
 
         return getMjRankDTO(sortedItems);
+    }
+
+    @Override
+    public List<MjPlayerDTO> getMjPlayers() {
+        List<User> users = userService.findAll();
+
+        List<MjPlayerDTO> mjPlayerDTOs = new ArrayList<>();
+        for (User user : users) {
+            LocalDateTime lastGameTIme = mjLogRepository.findUserLastGameTime(user.getId());
+            MjPlayerDTO mjPlayerDTO = new MjPlayerDTO(user.getId(), user.getNickname(), lastGameTIme);
+            mjPlayerDTOs.add(mjPlayerDTO);
+        }
+        return mjPlayerDTOs;
+    }
+
+    @Override
+    public List<MjPlayerDTO> getLatestMjPlayers() {
+        List<MjLog> mfjLogs = mjLogRepository.findLatestMjGameLog();
+        List<Integer> userIds = mfjLogs.stream().map(MjLog::getUserId).toList();
+        List<User> users = userService.findByIdIn(userIds);
+
+        List<MjPlayerDTO> mjPlayerDTOs = new ArrayList<>();
+        for (User user : users) {
+            LocalDateTime lastGameTIme = mjLogRepository.findUserLastGameTime(user.getId());
+            MjPlayerDTO mjPlayerDTO = new MjPlayerDTO(user.getId(), user.getNickname(), lastGameTIme);
+            mjPlayerDTOs.add(mjPlayerDTO);
+        }
+        return List.of();
     }
 
     private MjRankDTO getMjRankDTO(List<MjRankDTO.RankItem> sortedItems) {
