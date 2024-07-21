@@ -28,8 +28,64 @@ public class MjServiceImpl implements MjService {
 
     @Override
     public List<MjLogDTO> getMjLogs() {
-        List<MjLogDTO> mjLogDTOs = new ArrayList<>();
         List<MjLog> mjLogs = mjLogRepository.findAll();
+        return creatMjLogDTOs(mjLogs);
+    }
+
+    @Override
+    public List<MjLogDTO> getUserMjLogs(Integer userId) {
+        List<MjLog> mjLogs = mjLogRepository.findByUserId(userId);
+        return creatMjLogDTOs(mjLogs);
+    }
+
+    @Override
+    public MjRankDTO getMjRanks() {
+        List<User> users = userService.findAll();
+
+        // crete rank item wiht user tags
+        List<MjRankDTO.RankItem> rankItems = new ArrayList<>();
+        for (User user : users) {
+            LocalDateTime lastGameTime = null;
+            List<String> tags = new ArrayList<>();
+            List<MjLog> mjLogs = mjLogRepository.findLast10LogWithTags(user.getId());
+            if (!mjLogs.isEmpty()) {
+                lastGameTime = mjLogs.get(0).getCreateTime();
+                tags = mjLogs.stream().map(MjLog::getTags).flatMap(List::stream).toList();
+            }
+            MjRankDTO.RankItem item = new MjRankDTO.RankItem(user.getId(), user.getNickname(), user.getCoin(), tags, lastGameTime);
+            rankItems.add(item);
+        }
+
+        List<MjRankDTO.RankItem> zeroImtes = rankItems.stream().filter(item -> item.getUserCoin() == 0).toList();
+        List<MjRankDTO.RankItem> nonZeroItems = rankItems.stream().filter(item -> item.getUserCoin() != 0).toList();
+        zeroImtes.sort(Comparator.nullsLast(Comparator.comparing(MjRankDTO.RankItem::getLastGameTime).reversed()));
+        nonZeroItems.sort(Comparator.nullsLast(Comparator.comparing(MjRankDTO.RankItem::getUserCoin).reversed()));
+
+        List<MjRankDTO.RankItem> sortedItems = new ArrayList<>();
+        sortedItems.addAll(nonZeroItems);
+        sortedItems.addAll(zeroImtes);
+
+        return getMjRankDTO(sortedItems);
+    }
+
+    private MjRankDTO getMjRankDTO(List<MjRankDTO.RankItem> sortedItems) {
+        MjRankDTO mjRankDTO = new MjRankDTO();
+        if (!sortedItems.isEmpty()) {
+            MjRankDTO.RankItem topItem = sortedItems.get(0);
+            MjRankDTO.RankItem bottomItem = sortedItems.get(sortedItems.size() - 1);
+            mjRankDTO.setTopUserId(topItem.getUserId());
+            mjRankDTO.setTopUserNickname(topItem.getUserNickname());
+            mjRankDTO.setTopUserCoin(topItem.getUserCoin());
+            mjRankDTO.setBottomUserId(bottomItem.getUserId());
+            mjRankDTO.setBottomUserNickname(bottomItem.getUserNickname());
+            mjRankDTO.setBottomUserCoin(bottomItem.getUserCoin());
+        }
+        mjRankDTO.setRankItems(sortedItems);
+        return mjRankDTO;
+    }
+
+    private List<MjLogDTO> creatMjLogDTOs(List<MjLog> mjLogs) {
+        List<MjLogDTO> mjLogDTOs = new ArrayList<>();
 
         // create dto by log
         Map<String, List<MjLog>> gameMjLogMap = mjLogs.stream().collect(Collectors.groupingBy(MjLog::getGameId));
@@ -76,52 +132,5 @@ public class MjServiceImpl implements MjService {
 
         // order by createTime desc
         mjLogDTOs.sort(Comparator.nullsLast(Comparator.comparing(MjLogDTO::getCreateTime).reversed()));
-        return mjLogDTOs;
-    }
-
-    @Override
-    public MjRankDTO getMjRanks() {
-        List<User> users = userService.findAll();
-
-        // crete rank item wiht user tags
-        List<MjRankDTO.RankItem> rankItems = new ArrayList<>();
-        for (User user : users) {
-            LocalDateTime lastGameTime = null;
-            List<String> tags = new ArrayList<>();
-            List<MjLog> mjLogs = mjLogRepository.findLast10LogWithTags(user.getId());
-            if (!mjLogs.isEmpty()) {
-                lastGameTime = mjLogs.get(0).getCreateTime();
-                tags = mjLogs.stream().map(MjLog::getTags).flatMap(List::stream).toList();
-            }
-            MjRankDTO.RankItem item = new MjRankDTO.RankItem(user.getId(), user.getNickname(), user.getCoin(), tags, lastGameTime);
-            rankItems.add(item);
-        }
-
-        List<MjRankDTO.RankItem> zeroImtes = rankItems.stream().filter(item -> item.getUserCoin() == 0).toList();
-        List<MjRankDTO.RankItem> nonZeroItems = rankItems.stream().filter(item -> item.getUserCoin() != 0).toList();
-        zeroImtes.sort(Comparator.nullsLast(Comparator.comparing(MjRankDTO.RankItem::getLastGameTime).reversed()));
-        nonZeroItems.sort(Comparator.nullsLast(Comparator.comparing(MjRankDTO.RankItem::getUserCoin).reversed()));
-
-        List<MjRankDTO.RankItem> sortedItems = new ArrayList<>();
-        sortedItems.addAll(nonZeroItems);
-        sortedItems.addAll(zeroImtes);
-
-        return getMjRankDTO(sortedItems);
-    }
-
-    private static MjRankDTO getMjRankDTO(List<MjRankDTO.RankItem> sortedItems) {
-        MjRankDTO mjRankDTO = new MjRankDTO();
-        if (!sortedItems.isEmpty()) {
-            MjRankDTO.RankItem topItem = sortedItems.get(0);
-            MjRankDTO.RankItem bottomItem = sortedItems.get(sortedItems.size() - 1);
-            mjRankDTO.setTopUserId(topItem.getUserId());
-            mjRankDTO.setTopUserNickname(topItem.getUserNickname());
-            mjRankDTO.setTopUserCoin(topItem.getUserCoin());
-            mjRankDTO.setBottomUserId(bottomItem.getUserId());
-            mjRankDTO.setBottomUserNickname(bottomItem.getUserNickname());
-            mjRankDTO.setBottomUserCoin(bottomItem.getUserCoin());
-        }
-        mjRankDTO.setRankItems(sortedItems);
-        return mjRankDTO;
     }
 }

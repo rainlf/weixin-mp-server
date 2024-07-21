@@ -7,6 +7,7 @@ import com.rainlf.weixin.v3.domain.mahjong.MjService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,5 +32,10 @@ public class MjController {
     @GetMapping("/ranks")
     public ApiResp<MjRankDTO> getMjRanks() {
         return ApiResp.success(mjService.getMjRanks());
+    }
+
+    @GetMapping("/user/{userId}/logs")
+    public ApiResp<List<MjLogDTO>> getUserMjLogs(@PathVariable("userId") Integer userId) {
+        return ApiResp.success(mjService.getUserMjLogs(userId));
     }
 }

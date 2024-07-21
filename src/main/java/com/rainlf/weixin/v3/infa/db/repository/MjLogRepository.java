@@ -19,4 +19,6 @@ public interface MjLogRepository extends JpaRepository<MjLog, Integer> {
     @Query(value = "select * from weixin_mj_log where user_id = :userId and (game_type is not null or point_operators is not null) order by create_time desc limit 10", nativeQuery = true)
     List<MjLog> findLast10LogWithTags(@Param("userId") Integer userId);
 
+    List<MjLog> findByUserId(Integer userId);
+
 }

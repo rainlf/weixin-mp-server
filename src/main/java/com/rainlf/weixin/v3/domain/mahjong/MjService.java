@@ -12,5 +12,7 @@ import java.util.List;
 public interface MjService {
     List<MjLogDTO> getMjLogs();
 
+    List<MjLogDTO> getUserMjLogs(Integer userId);
+
     MjRankDTO getMjRanks();
 }
