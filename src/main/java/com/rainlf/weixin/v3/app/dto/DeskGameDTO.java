@@ -14,7 +14,8 @@ import java.util.List;
 public class DeskGameDTO {
     private Integer recordrId;
     private MjGameTypeEnum gameType;
-    private List<Item> items;
+    private List<Item> winners;
+    private List<Item> losers;
 
     @Data
     public static class Item {
@@ -25,11 +26,16 @@ public class DeskGameDTO {
     }
 
     public boolean isValid() {
-        return items != null
-                && recordrId != null
+        return recordrId != null
                 && gameType != null
-                && !items.isEmpty()
-                && items.stream().allMatch(item -> item.getUserId() != null)
-                && items.stream().allMatch(item -> item.getScore() != null);
+                && !winners.isEmpty()
+                && winners.stream().allMatch(item -> item.getUserId() != null)
+                && winners.stream().allMatch(item -> item.getScore() != null)
+                && winners.stream().allMatch(item -> item.getScore() > 0)
+                && !losers.isEmpty()
+                && losers.stream().allMatch(item -> item.getUserId() != null)
+                && losers.stream().allMatch(item -> item.getScore() != null)
+                && losers.stream().allMatch(item -> item.getScore() < 0)
+                && winners.stream().mapToInt(Item::getScore).sum() + losers.stream().mapToInt(Item::getScore).sum() == 0;
     }
 }

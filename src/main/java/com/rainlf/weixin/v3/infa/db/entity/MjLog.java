@@ -32,7 +32,6 @@ public class MjLog {
     @ElementCollection
     @Convert(converter = MjPointOperatorEnumsConverter.class)
     private List<MjPointOperatorEnum> pointOperators;
-    private Integer totalPoint;
     private Integer score;
     @Column(name = "is_deleted", insertable = false)
     private boolean deleted;

@@ -1,5 +1,6 @@
 package com.rainlf.weixin.v3.domain.mahjong;
 
+import com.rainlf.weixin.v3.app.dto.DeskGameDTO;
 import com.rainlf.weixin.v3.app.dto.OnlineGameDTO;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjGameLog;
 import com.rainlf.weixin.v3.domain.mahjong.model.MjPlayer;
@@ -20,4 +21,6 @@ public interface MjService {
     List<MjPlayer> getLatestMjPlayers();
 
     void saveOnlieGame(OnlineGameDTO onlineGameDTO);
+
+    void saveDeskGame(DeskGameDTO deskGameDTO);
 }

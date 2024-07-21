@@ -1,5 +1,6 @@
 package com.rainlf.weixin.v3.domain.mahjong;
 
+import com.rainlf.weixin.v3.app.dto.DeskGameDTO;
 import com.rainlf.weixin.v3.app.dto.OnlineGameDTO;
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjGameTypeEnum;
 import com.rainlf.weixin.v3.domain.mahjong.consts.MjUserTypeEnum;
@@ -109,7 +110,54 @@ public class MjServiceImpl implements MjService {
         mjLog.setGameType(MjGameTypeEnum.ONLINE_MJ);
         mjLog.setScore(MgttUtils.getRandAward());
         mjLogRepository.save(mjLog);
+    }
 
+    @Override
+    public void saveDeskGame(DeskGameDTO deskGameDTO) {
+        String gameId = MgttUtils.getMjUUID();
 
+        // winner
+        for (DeskGameDTO.Item item : deskGameDTO.getWinners()) {
+            User user = userService.findById(item.getUserId());
+            user.addScore(item.getScore());
+            userService.save(user);
+
+            MjLog mjLog = new MjLog();
+            mjLog.setGameId(gameId);
+            mjLog.setUserId(item.getUserId());
+            mjLog.setUserType(MjUserTypeEnum.WINNER);
+            mjLog.setGameType(deskGameDTO.getGameType());
+            mjLog.setPoint(item.getPoint());
+            mjLog.setPointOperators(item.getPointOperators());
+            mjLog.setScore(item.getScore());
+            mjLogRepository.save(mjLog);
+        }
+
+        // loser
+        for (DeskGameDTO.Item item : deskGameDTO.getLosers()) {
+            User user = userService.findById(item.getUserId());
+            user.addScore(item.getScore());
+            userService.save(user);
+
+            MjLog mjLog = new MjLog();
+            mjLog.setGameId(gameId);
+            mjLog.setUserId(item.getUserId());
+            mjLog.setUserType(MjUserTypeEnum.LOSER);
+            mjLog.setGameType(deskGameDTO.getGameType());
+            mjLog.setScore(item.getScore());
+            mjLogRepository.save(mjLog);
+        }
+
+        // recorder
+        User user = userService.findById(deskGameDTO.getRecordrId());
+        user.addScore(MgttUtils.getRandAward());
+        userService.save(user);
+        MjLog mjLog = new MjLog();
+        mjLog.setGameId(gameId);
+        mjLog.setUserId(deskGameDTO.getRecordrId());
+        mjLog.setUserType(MjUserTypeEnum.RECORDER);
+        mjLog.setGameType(deskGameDTO.getGameType());
+        mjLog.setScore(MgttUtils.getRandAward());
+        mjLogRepository.save(mjLog);
     }
 }

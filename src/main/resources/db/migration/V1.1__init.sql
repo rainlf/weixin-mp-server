@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS `weixin_mj_log`
     `user_type`       int unsigned     not null,
     `point`           int unsigned     not null,
     `point_operators` varchar(128)     not null,
-    `total_points`    int unsigned     not null,
     `score`           int unsigned     not null,
     `is_deleted`      tinyint unsigned not null default 0,
     `create_time`     datetime                  default current_timestamp,

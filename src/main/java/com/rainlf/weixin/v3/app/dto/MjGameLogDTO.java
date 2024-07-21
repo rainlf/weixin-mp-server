@@ -34,6 +34,4 @@ public class MjGameLogDTO {
             this.userTags = mjUserLog.getMjLog().getTags();
         }
     }
-
-
 }
